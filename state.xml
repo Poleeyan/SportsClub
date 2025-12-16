@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Members>
+    <Member>
+      <Id>ff698339-c0d8-4120-abcc-faf8c6f9b3de</Id>
+      <FullName>Степан</FullName>
+      <Registered>2025-12-15T16:35:22.5512244+02:00</Registered>
+      <Subscription xsi:type="BasicMembership">
+        <Type>Basic</Type>
+        <Price>29.99</Price>
+        <DurationDays>30</DurationDays>
+      </Subscription>
+      <Visits>1</Visits>
+      <IsActive>true</IsActive>
+    </Member>
+    <Member>
+      <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
+      <FullName>Андрій</FullName>
+      <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
+      <Subscription xsi:type="PremiumMembership">
+        <Type>Premium</Type>
+        <Price>59.99</Price>
+        <DurationDays>30</DurationDays>
+        <HasPoolAccess>true</HasPoolAccess>
+      </Subscription>
+      <Visits>2</Visits>
+      <IsActive>true</IsActive>
+    </Member>
+  </Members>
+  <Trainers>
+    <Trainer>
+      <FullName>Віталій</FullName>
+      <Specialization>Тяжка атлетика</Specialization>
+      <ExperienceYears>10</ExperienceYears>
+    </Trainer>
+  </Trainers>
+  <Sessions>
+    <TrainingSession>
+      <Date>2025-12-16T12:54:27.4740972+02:00</Date>
+      <Coach>
+        <FullName>Віталій</FullName>
+        <Specialization>Тяжка атлетика</Specialization>
+        <ExperienceYears>10</ExperienceYears>
+      </Coach>
+      <Participants>
+        <Member>
+          <Id>ff698339-c0d8-4120-abcc-faf8c6f9b3de</Id>
+          <FullName>Степан</FullName>
+          <Registered>2025-12-15T16:35:22.5512244+02:00</Registered>
+          <Subscription xsi:type="BasicMembership">
+            <Type>Basic</Type>
+            <Price>29.99</Price>
+            <DurationDays>30</DurationDays>
+          </Subscription>
+          <Visits>1</Visits>
+          <IsActive>true</IsActive>
+        </Member>
+        <Member>
+          <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
+          <FullName>Андрій</FullName>
+          <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
+          <Subscription xsi:type="PremiumMembership">
+            <Type>Premium</Type>
+            <Price>59.99</Price>
+            <DurationDays>30</DurationDays>
+            <HasPoolAccess>true</HasPoolAccess>
+          </Subscription>
+          <Visits>2</Visits>
+          <IsActive>true</IsActive>
+        </Member>
+      </Participants>
+      <Facility>
+        <Name>Зал</Name>
+        <Type>Hall</Type>
+        <Capacity>50</Capacity>
+      </Facility>
+    </TrainingSession>
+    <TrainingSession>
+      <Date>2025-12-16T12:54:33.4023139+02:00</Date>
+      <Coach>
+        <FullName>Віталій</FullName>
+        <Specialization>Тяжка атлетика</Specialization>
+        <ExperienceYears>10</ExperienceYears>
+      </Coach>
+      <Participants>
+        <Member>
+          <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
+          <FullName>Андрій</FullName>
+          <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
+          <Subscription xsi:type="PremiumMembership">
+            <Type>Premium</Type>
+            <Price>59.99</Price>
+            <DurationDays>30</DurationDays>
+            <HasPoolAccess>true</HasPoolAccess>
+          </Subscription>
+          <Visits>2</Visits>
+          <IsActive>true</IsActive>
+        </Member>
+      </Participants>
+      <Facility>
+        <Name>Басейн</Name>
+        <Type>Pool</Type>
+        <Capacity>20</Capacity>
+      </Facility>
+    </TrainingSession>
+    <TrainingSession>
+      <Date>2025-12-16T12:54:36.7435839+02:00</Date>
+      <Coach>
+        <FullName>Віталій</FullName>
+        <Specialization>Тяжка атлетика</Specialization>
+        <ExperienceYears>10</ExperienceYears>
+      </Coach>
+      <Participants>
+        <Member>
+          <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
+          <FullName>Андрій</FullName>
+          <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
+          <Subscription xsi:type="PremiumMembership">
+            <Type>Premium</Type>
+            <Price>59.99</Price>
+            <DurationDays>30</DurationDays>
+            <HasPoolAccess>true</HasPoolAccess>
+          </Subscription>
+          <Visits>2</Visits>
+          <IsActive>true</IsActive>
+        </Member>
+      </Participants>
+      <Facility>
+        <Name>Тенісний корт</Name>
+        <Type>Tennis Court</Type>
+        <Capacity>4</Capacity>
+      </Facility>
+    </TrainingSession>
+  </Sessions>
+  <Facilities>
+    <Facility>
+      <Name>Зал</Name>
+      <Type>Hall</Type>
+      <Capacity>50</Capacity>
+    </Facility>
+    <Facility>
+      <Name>Басейн</Name>
+      <Type>Pool</Type>
+      <Capacity>20</Capacity>
+    </Facility>
+    <Facility>
+      <Name>Тенісний корт</Name>
+      <Type>Tennis Court</Type>
+      <Capacity>4</Capacity>
+    </Facility>
+  </Facilities>
+</AppState>
