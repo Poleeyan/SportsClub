@@ -12,6 +12,8 @@ namespace SportsClub.Models
         public Membership? Subscription { get; set; }
         public int Visits { get; set; } // инкапсуляция через свойство для сериализации
         public bool IsActive { get; set; } // дополнительное поле — состояние активности
+        // number of days this member purchased for the subscription
+        public int PurchasedDays { get; set; }
 
         // конструктор без аргументов
         public Member()
@@ -19,6 +21,7 @@ namespace SportsClub.Models
             Id = Guid.NewGuid();
             Registered = DateTime.Now;
             Visits = 0;
+            PurchasedDays = 0;
             FullName = string.Empty;
             IsActive = true;
         }

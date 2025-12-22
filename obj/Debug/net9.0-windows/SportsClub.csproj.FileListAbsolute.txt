@@ -26,3 +26,4 @@ C:\Users\1\Downloads\SportsClub\obj\Debug\net9.0-windows\refint\SportsClub.dll
 C:\Users\1\Downloads\SportsClub\obj\Debug\net9.0-windows\SportsClub.pdb
 C:\Users\1\Downloads\SportsClub\obj\Debug\net9.0-windows\SportsClub.genruntimeconfig.cache
 C:\Users\1\Downloads\SportsClub\obj\Debug\net9.0-windows\ref\SportsClub.dll
+C:\Users\1\Downloads\SportsClub\obj\Debug\net9.0-windows\SportsClub.sourcelink.json

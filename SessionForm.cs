@@ -43,6 +43,12 @@ namespace SportsClub
                     var sel = facilities.FirstOrDefault(x => x.Name == Session.Facility.Name && x.Type == Session.Facility.Type);
                     if (sel != null) cbFacility.SelectedItem = sel;
                 }
+                else if (!string.IsNullOrWhiteSpace(Session.Location))
+                {
+                    var selByName = facilities.FirstOrDefault(x => x.Name == Session.Location);
+                    if (selByName != null) cbFacility.SelectedItem = selByName;
+                    else if (cbFacility.Items.Count > 0) cbFacility.SelectedIndex = 0;
+                }
                 else if (cbFacility.Items.Count > 0) cbFacility.SelectedIndex = 0;
             }
 
@@ -122,6 +128,7 @@ namespace SportsClub
 
             Session.Participants = selected;
             Session.Facility = selFacility;
+            Session.Location = selFacility?.Name ?? Session.Location;
             DialogResult = DialogResult.OK;
             Close();
         }

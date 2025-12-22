@@ -49,7 +49,8 @@ namespace SportsClub
                 Id = m.Id,
                 Registered = m.Registered,
                 Visits = m.Visits,
-                Subscription = m.Subscription
+                Subscription = m.Subscription,
+                PurchasedDays = m.PurchasedDays
             };
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -73,8 +74,21 @@ namespace SportsClub
         private void RefreshMembersGrid()
         {
             dgvMembers!.DataSource = null;
-            var view = members.Select(m => new { m.FullName, Visits = m.GetVisits(), Subscription = m.Subscription?.Type }).ToList();
+            var view = members.Select(m => new
+            {
+                m.FullName,
+                Visits = (m.Subscription != null && m.Subscription.Type == "Premium") ? "Unlimited" : (object)m.GetVisits(),
+                Subscription = m.Subscription?.Type,
+                Days = m.PurchasedDays,
+                Price = m.Subscription != null ? m.Subscription.GetPrice(m.PurchasedDays, m.GetVisits()) : 0.0
+            }).ToList();
             dgvMembers!.DataSource = view;
+            // format Price column as currency if present
+            if (dgvMembers.Columns.Contains("Price"))
+            {
+                dgvMembers.Columns["Price"].DefaultCellStyle.Format = "C2";
+                dgvMembers.Columns["Price"].DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            }
         }
 
         private void RefreshTrainersGrid()
@@ -87,7 +101,7 @@ namespace SportsClub
         private void RefreshSessionsGrid()
         {
             dgvSessions!.DataSource = null;
-            var view = sessions.Select(s => new { Date = s.Date.ToString("g"), Coach = s.Coach?.FullName, Participants = s.Participants?.Count ?? 0 }).ToList();
+            var view = sessions.Select(s => new { Date = s.Date.ToString("g"), Coach = s.Coach?.FullName, Participants = s.Participants?.Count ?? 0, Place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location }).ToList();
             dgvSessions!.DataSource = view;
         }
 
@@ -164,7 +178,7 @@ namespace SportsClub
             if (idx < 0 || idx >= sessions.Count) return;
             var s = sessions[idx];
             using var f = new SessionForm(trainers, members, facilities);
-            f.Session = new TrainingSession(s.Date, s.Coach) { Participants = s.Participants };
+            f.Session = new TrainingSession(s.Date, s.Coach, s.Facility) { Participants = s.Participants, Facility = s.Facility, Location = s.Location };
             if (f.ShowDialog() == DialogResult.OK)
             {
                 sessions[idx] = f.Session;

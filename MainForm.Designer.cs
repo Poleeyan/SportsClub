@@ -45,7 +45,24 @@ namespace SportsClub
             btnSaveXml.Click += (s, e) => { try { Services.PersistenceService.SaveStateXml("state.xml", members, trainers, sessions, facilities); MessageBox.Show("Saved xml"); } catch (Exception ex) { MessageBox.Show(ex.Message); } };
             persistFlow.Controls.Add(btnSaveXml);
             btnLoadXml = new Button { Text = "Load XML", AutoSize = true, Margin = new Padding(6) };
-            btnLoadXml.Click += (s, e) => { try { var state = Services.PersistenceService.LoadStateXml("state.xml"); members = state.Members ?? new List<Models.Member>(); trainers = state.Trainers ?? new List<Models.Trainer>(); sessions = state.Sessions ?? new List<Models.TrainingSession>(); /* keep static facilities */ RefreshAllGrids(); } catch (Exception ex) { MessageBox.Show(ex.Message); } };
+            btnLoadXml.Click += (s, e) => { try {
+                    var state = Services.PersistenceService.LoadStateXml("state.xml");
+                    members = state.Members ?? new List<Models.Member>();
+                    trainers = state.Trainers ?? new List<Models.Trainer>();
+                    sessions = state.Sessions ?? new List<Models.TrainingSession>();
+                    // re-associate session.Facility instances with the app's static facilities list
+                    foreach (var ses in sessions)
+                    {
+                        if (ses.Facility != null)
+                        {
+                            var found = facilities.FirstOrDefault(f => f.Name == ses.Facility.Name && f.Type == ses.Facility.Type);
+                            if (found != null) ses.Facility = found;
+                        }
+                        // ensure Location is set (prefer explicit Location from XML, otherwise facility name)
+                        if (string.IsNullOrWhiteSpace(ses.Location) && ses.Facility != null) ses.Location = ses.Facility.Name;
+                    }
+                    RefreshAllGrids();
+                } catch (Exception ex) { MessageBox.Show(ex.Message); } };
             persistFlow.Controls.Add(btnLoadXml);
             root.Controls.Add(persistFlow, 0, 0);
 

@@ -6,7 +6,7 @@ namespace SportsClub.Models
     {
         public bool HasPoolAccess { get; set; }
 
-        public PremiumMembership() : base("Premium", 59.99m, 30)
+        public PremiumMembership() : base("Premium", 59.99, 30)
         {
             HasPoolAccess = true;
         }
@@ -19,6 +19,12 @@ namespace SportsClub.Models
         public override string GetInfo()
         {
             return base.GetInfo() + (HasPoolAccess ? " + Pool" : "") + " (Premium)";
+        }
+
+        public override double GetPrice(int days, int visits)
+        {
+            // Premium members have unlimited visits — charge only by days
+            return GetPriceForDays(days);
         }
     }
 }

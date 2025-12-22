@@ -9,7 +9,12 @@ namespace SportsClub
         private System.Windows.Forms.ComboBox cbSubscription;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown nudVisits;
+        private System.Windows.Forms.Label lblVisitsInfo;
         private System.Windows.Forms.CheckBox chkActive;
+        private System.Windows.Forms.Label labelDays;
+        private System.Windows.Forms.NumericUpDown nudDays;
+        private System.Windows.Forms.Label lblPriceTitle;
+        private System.Windows.Forms.Label lblPrice;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
 
@@ -30,10 +35,16 @@ namespace SportsClub
             this.cbSubscription = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.nudVisits = new System.Windows.Forms.NumericUpDown();
+            this.lblVisitsInfo = new System.Windows.Forms.Label();
+            this.labelDays = new System.Windows.Forms.Label();
+            this.nudDays = new System.Windows.Forms.NumericUpDown();
+            this.lblPriceTitle = new System.Windows.Forms.Label();
+            this.lblPrice = new System.Windows.Forms.Label();
             this.chkActive = new System.Windows.Forms.CheckBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudVisits)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDays)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -69,6 +80,7 @@ namespace SportsClub
             this.cbSubscription.Name = "cbSubscription";
             this.cbSubscription.Size = new System.Drawing.Size(150, 23);
             this.cbSubscription.TabIndex = 3;
+            this.cbSubscription.SelectedIndexChanged += new System.EventHandler(this.cbSubscription_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -79,6 +91,45 @@ namespace SportsClub
             this.label3.TabIndex = 4;
             this.label3.Text = "Visits:";
             // 
+            // labelDays
+            //
+            this.labelDays.AutoSize = true;
+            this.labelDays.Location = new System.Drawing.Point(12, 120);
+            this.labelDays.Name = "labelDays";
+            this.labelDays.Size = new System.Drawing.Size(34, 15);
+            this.labelDays.TabIndex = 5;
+            this.labelDays.Text = "Days:";
+            // 
+            // nudDays
+            //
+            this.nudDays.Location = new System.Drawing.Point(80, 118);
+            this.nudDays.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.nudDays.Maximum = new decimal(new int[] { 365, 0, 0, 0 });
+            this.nudDays.Name = "nudDays";
+            this.nudDays.Size = new System.Drawing.Size(80, 23);
+            this.nudDays.TabIndex = 6;
+            this.nudDays.Value = new decimal(new int[] { 30, 0, 0, 0 });
+            this.nudDays.ValueChanged += new System.EventHandler(this.nudDays_ValueChanged);
+
+            // 
+            // lblPriceTitle
+            //
+            this.lblPriceTitle.AutoSize = true;
+            this.lblPriceTitle.Location = new System.Drawing.Point(180, 120);
+            this.lblPriceTitle.Name = "lblPriceTitle";
+            this.lblPriceTitle.Size = new System.Drawing.Size(36, 15);
+            this.lblPriceTitle.TabIndex = 7;
+            this.lblPriceTitle.Text = "Price:";
+
+            // 
+            // lblPrice
+            //
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Location = new System.Drawing.Point(220, 120);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(34, 15);
+            this.lblPrice.TabIndex = 8;
+            this.lblPrice.Text = "0.00";
             // chkActive
             // 
             this.chkActive.AutoSize = true;
@@ -96,10 +147,20 @@ namespace SportsClub
             this.nudVisits.Name = "nudVisits";
             this.nudVisits.Size = new System.Drawing.Size(80, 23);
             this.nudVisits.TabIndex = 5;
+            this.nudVisits.ValueChanged += new System.EventHandler(this.nudVisits_ValueChanged);
+            // lblVisitsInfo (shows "Unlimited" when Premium)
+            this.lblVisitsInfo.AutoSize = true;
+            this.lblVisitsInfo.Location = new System.Drawing.Point(170, 92);
+            this.lblVisitsInfo.Name = "lblVisitsInfo";
+            this.lblVisitsInfo.Size = new System.Drawing.Size(60, 15);
+            this.lblVisitsInfo.TabIndex = 9;
+            this.lblVisitsInfo.Text = "Unlimited";
+            this.lblVisitsInfo.Visible = false;
+            
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(80, 130);
+            this.btnOk.Location = new System.Drawing.Point(80, 150);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(80, 30);
             this.btnOk.TabIndex = 6;
@@ -109,7 +170,7 @@ namespace SportsClub
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(170, 130);
+            this.btnCancel.Location = new System.Drawing.Point(170, 150);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(80, 30);
             this.btnCancel.TabIndex = 7;
@@ -119,11 +180,16 @@ namespace SportsClub
             // 
             // MemberForm
             // 
-            this.ClientSize = new System.Drawing.Size(350, 180);
+            this.ClientSize = new System.Drawing.Size(350, 220);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.nudVisits);
+            this.Controls.Add(this.lblVisitsInfo);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelDays);
+            this.Controls.Add(this.nudDays);
+            this.Controls.Add(this.lblPriceTitle);
+            this.Controls.Add(this.lblPrice);
             this.Controls.Add(this.chkActive);
             this.Controls.Add(this.cbSubscription);
             this.Controls.Add(this.label2);
@@ -136,6 +202,7 @@ namespace SportsClub
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Member";
             ((System.ComponentModel.ISupportInitialize)(this.nudVisits)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDays)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }

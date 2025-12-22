@@ -12,7 +12,9 @@ namespace SportsClub.Models
         protected DateTime createdAt; // protected example, ignored for XML
 
         public string Type { get; set; } = string.Empty;
-        public decimal Price { get; set; } = 0m;
+        // Price is total price for the period defined by DurationDays.
+        // Use double here per requirement (and for simple calculations).
+        public double Price { get; set; } = 0.0;
         public int DurationDays { get; set; } = 0;
 
         public Membership()
@@ -20,7 +22,7 @@ namespace SportsClub.Models
             createdAt = DateTime.Now;
         }
 
-        public Membership(string type, decimal price, int days) : this()
+        public Membership(string type, double price, int days) : this()
         {
             Type = type;
             Price = price;
@@ -29,7 +31,26 @@ namespace SportsClub.Models
 
         public virtual string GetInfo()
         {
-            return $"{Type} - {Price:C} for {DurationDays} days";
+            return $"{Type} - {Price.ToString("C")} for {DurationDays} days";
+        }
+
+        // Calculate price for arbitrary number of days based on the
+        // configured period price (linear scaling).
+        public double GetPriceForDays(int days)
+        {
+            if (days <= 0) return 0.0;
+            if (DurationDays <= 0) return Price * days; // fallback
+            return Price * ((double)days / DurationDays);
+        }
+
+        // Calculate full price including per-visit charges when applicable.
+        // Default: day-based price plus per-visit fee.
+        public virtual double GetPrice(int days, int visits)
+        {
+            double basePrice = GetPriceForDays(days);
+            const double visitFee = 2.0; // default per-visit fee
+            if (visits <= 0) return basePrice;
+            return basePrice + visitFee * visits;
         }
 
         public abstract int GetAccessLevel(); // abstract method

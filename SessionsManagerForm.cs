@@ -44,7 +44,7 @@ namespace SportsClub
             if (idx < 0 || idx >= sessions.Count) return;
             var s = sessions[idx];
             using var f = new SessionForm(trainers, members, facilities);
-            f.Session = new TrainingSession(s.Date, s.Coach, s.Facility) { Participants = s.Participants, Facility = s.Facility };
+            f.Session = new TrainingSession(s.Date, s.Coach, s.Facility) { Participants = s.Participants, Facility = s.Facility, Location = s.Location };
             if (f.ShowDialog() == DialogResult.OK)
             {
                 sessions[idx] = f.Session;
@@ -67,7 +67,7 @@ namespace SportsClub
         private void RefreshGrid()
         {
             dgv.DataSource = null;
-            dgv.DataSource = sessions.Select(s => new { Date = s.Date.ToString("g"), Coach = s.Coach?.FullName, Participants = s.Participants?.Count ?? 0 }).ToList();
+            dgv.DataSource = sessions.Select(s => new { Date = s.Date.ToString("g"), Coach = s.Coach?.FullName, Participants = s.Participants?.Count ?? 0, Place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location }).ToList();
         }
     }
 }

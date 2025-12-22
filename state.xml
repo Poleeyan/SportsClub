@@ -10,8 +10,9 @@
         <Price>29.99</Price>
         <DurationDays>30</DurationDays>
       </Subscription>
-      <Visits>1</Visits>
+      <Visits>5</Visits>
       <IsActive>true</IsActive>
+      <PurchasedDays>30</PurchasedDays>
     </Member>
     <Member>
       <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
@@ -25,6 +26,7 @@
       </Subscription>
       <Visits>2</Visits>
       <IsActive>true</IsActive>
+      <PurchasedDays>40</PurchasedDays>
     </Member>
   </Members>
   <Trainers>
@@ -54,6 +56,7 @@
           </Subscription>
           <Visits>1</Visits>
           <IsActive>true</IsActive>
+          <PurchasedDays>0</PurchasedDays>
         </Member>
         <Member>
           <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
@@ -67,6 +70,7 @@
           </Subscription>
           <Visits>2</Visits>
           <IsActive>true</IsActive>
+          <PurchasedDays>0</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -74,6 +78,7 @@
         <Type>Hall</Type>
         <Capacity>50</Capacity>
       </Facility>
+      <Location>Зал</Location>
     </TrainingSession>
     <TrainingSession>
       <Date>2025-12-16T12:54:33.4023139+02:00</Date>
@@ -95,34 +100,7 @@
           </Subscription>
           <Visits>2</Visits>
           <IsActive>true</IsActive>
-        </Member>
-      </Participants>
-      <Facility>
-        <Name>Басейн</Name>
-        <Type>Pool</Type>
-        <Capacity>20</Capacity>
-      </Facility>
-    </TrainingSession>
-    <TrainingSession>
-      <Date>2025-12-16T12:54:36.7435839+02:00</Date>
-      <Coach>
-        <FullName>Віталій</FullName>
-        <Specialization>Тяжка атлетика</Specialization>
-        <ExperienceYears>10</ExperienceYears>
-      </Coach>
-      <Participants>
-        <Member>
-          <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
-          <FullName>Андрій</FullName>
-          <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
-          <Subscription xsi:type="PremiumMembership">
-            <Type>Premium</Type>
-            <Price>59.99</Price>
-            <DurationDays>30</DurationDays>
-            <HasPoolAccess>true</HasPoolAccess>
-          </Subscription>
-          <Visits>2</Visits>
-          <IsActive>true</IsActive>
+          <PurchasedDays>40</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -130,6 +108,7 @@
         <Type>Tennis Court</Type>
         <Capacity>4</Capacity>
       </Facility>
+      <Location>Тенісний корт</Location>
     </TrainingSession>
   </Sessions>
   <Facilities>

@@ -9,6 +9,7 @@ namespace SportsClub.Models
         public Trainer? Coach { get; set; }
         public List<Member> Participants { get; set; } = new();
         public Facility? Facility { get; set; }
+        public string Location { get; set; } = string.Empty;
 
         public TrainingSession() { }
 
@@ -17,6 +18,7 @@ namespace SportsClub.Models
             Date = date;
             Coach = coach;
             Facility = facility;
+            Location = facility?.Name ?? string.Empty;
         }
     }
 }
