@@ -5,7 +5,6 @@ namespace SportsClub.Models
 {
     public static class SpecializationMapping
     {
-        // Facility type (as used in Facility.Type) -> allowed specializations (Ukrainian)
         public static readonly Dictionary<string, string[]> FacilityToSpecializations = new()
         {
             { "Hall", new[] { "Тяжка атлетика", "Легка атлетика" } },
