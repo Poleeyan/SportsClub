@@ -43,14 +43,10 @@ namespace SportsClub.Models
             return Price * ((double)days / DurationDays);
         }
 
-        // Calculate full price including per-visit charges when applicable.
-        // Default: day-based price plus per-visit fee.
+        // Calculate full price based only on days (visits removed).
         public virtual double GetPrice(int days, int visits)
         {
-            double basePrice = GetPriceForDays(days);
-            const double visitFee = 2.0; // default per-visit fee
-            if (visits <= 0) return basePrice;
-            return basePrice + visitFee * visits;
+            return GetPriceForDays(days);
         }
 
         public abstract int GetAccessLevel(); // abstract method

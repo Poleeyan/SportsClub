@@ -18,8 +18,8 @@ namespace SportsClub.Models
 
         public override double GetPrice(int days, int visits)
         {
-            // Basic members pay per-visit fee in addition to day-based price
-            return base.GetPrice(days, visits);
+            // Price for Basic is day-based only (visits removed)
+            return GetPriceForDays(days);
         }
     }
 }

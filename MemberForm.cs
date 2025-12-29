@@ -1,6 +1,8 @@
 using System;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Linq;
+using System.Collections.Generic;
 using SportsClub.Models;
 
 namespace SportsClub
@@ -20,7 +22,7 @@ namespace SportsClub
         {
             base.OnLoad(e);
             txtName.Text = Member.FullName;
-            nudVisits.Value = Member.Visits;
+            
             cbSubscription.Items.Clear();
             cbSubscription.Items.Add("Basic");
             cbSubscription.Items.Add("Premium");
@@ -44,8 +46,6 @@ namespace SportsClub
                 nudDays.Value = 30;
             }
             UpdatePriceDisplay();
-            // set visits control state according to subscription
-            UpdateVisitsControlState();
             // set checkbox state
             if (this.Controls.ContainsKey("chkActive") && chkActive != null)
             {
@@ -56,7 +56,6 @@ namespace SportsClub
         private void btnOk_Click(object sender, EventArgs e)
         {
             Member.FullName = txtName.Text.Trim();
-            Member.Visits = (int)nudVisits.Value;
             var sel = cbSubscription.SelectedItem?.ToString();
             if (sel == "Premium") Member.Subscription = new PremiumMembership(); else Member.Subscription = new BasicMembership();
             // store purchased days on member (do not mutate subscription plan)
@@ -74,7 +73,6 @@ namespace SportsClub
 
         private void cbSubscription_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateVisitsControlState();
             UpdatePriceDisplay();
         }
 
@@ -83,24 +81,6 @@ namespace SportsClub
             UpdatePriceDisplay();
         }
 
-        private void nudVisits_ValueChanged(object sender, EventArgs e)
-        {
-            UpdatePriceDisplay();
-        }
-
-        private void UpdateVisitsControlState()
-        {
-            var sel = cbSubscription.SelectedItem?.ToString();
-            bool isPremium = sel == "Premium";
-            // disable numeric control for Premium and show label
-            nudVisits.Enabled = !isPremium;
-            lblVisitsInfo.Visible = isPremium;
-            if (isPremium)
-            {
-                // optionally set numeric to 0 when premium
-                nudVisits.Value = 0;
-            }
-        }
 
         private void UpdatePriceDisplay()
         {
@@ -111,8 +91,7 @@ namespace SportsClub
                 if (sel == "Premium") temp = new PremiumMembership(); else temp = new BasicMembership();
                 if (temp == null) { lblPrice.Text = "0.00"; return; }
                 var days = (int)nudDays.Value;
-                var visits = (int)nudVisits.Value;
-                var price = temp.GetPrice(days, visits);
+                var price = temp.GetPrice(days, 0);
                 lblPrice.Text = price.ToString("C");
             }
             catch
@@ -120,5 +99,7 @@ namespace SportsClub
                 lblPrice.Text = "0.00";
             }
         }
+
+        
     }
 }

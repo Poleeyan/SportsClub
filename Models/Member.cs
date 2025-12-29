@@ -10,7 +10,6 @@ namespace SportsClub.Models
         public string FullName { get; set; }
         public DateTime Registered { get; set; }
         public Membership? Subscription { get; set; }
-        public int Visits { get; set; } // инкапсуляция через свойство для сериализации
         public bool IsActive { get; set; } // дополнительное поле — состояние активности
         // number of days this member purchased for the subscription
         public int PurchasedDays { get; set; }
@@ -20,7 +19,6 @@ namespace SportsClub.Models
         {
             Id = Guid.NewGuid();
             Registered = DateTime.Now;
-            Visits = 0;
             PurchasedDays = 0;
             FullName = string.Empty;
             IsActive = true;
@@ -32,25 +30,9 @@ namespace SportsClub.Models
             FullName = name;
         }
 
-        public void AddVisit()
-        {
-            Visits++;
-        }
-
-        public void AddVisit(DateTime date)
-        {
-            // перегрузка: можно расширить запись истории
-            Visits++;
-        }
-
-        public int GetVisits()
-        {
-            return Visits;
-        }
-
         public override string ToString()
         {
-            return $"{FullName} ({Id.ToString().Substring(0,6)}) - Visits: {Visits} - {Subscription?.GetInfo() ?? "No sub"}";
+            return $"{FullName} ({Id.ToString().Substring(0,6)}) - {Subscription?.GetInfo() ?? "No sub"}";
         }
 
         public int CompareTo(Member? other)

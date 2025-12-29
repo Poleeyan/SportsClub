@@ -20,14 +20,17 @@ namespace SportsClub
         {
             base.OnLoad(e);
             txtName.Text = Trainer.FullName;
-            txtSpec.Text = Trainer.Specialization;
+            cbSpec.Items.Clear();
+            cbSpec.Items.AddRange(SpecializationMapping.AllSpecializations.ToArray());
+            if (!string.IsNullOrWhiteSpace(Trainer.Specialization) && cbSpec.Items.Contains(Trainer.Specialization)) cbSpec.SelectedItem = Trainer.Specialization;
+            else if (cbSpec.Items.Count > 0) cbSpec.SelectedIndex = 0;
             nudExp.Value = Trainer.ExperienceYears;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
             Trainer.FullName = txtName.Text.Trim();
-            Trainer.Specialization = txtSpec.Text.Trim();
+            Trainer.Specialization = cbSpec.SelectedItem?.ToString() ?? string.Empty;
             Trainer.ExperienceYears = (int)nudExp.Value;
             DialogResult = DialogResult.OK;
             Close();

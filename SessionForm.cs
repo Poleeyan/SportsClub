@@ -32,25 +32,9 @@ namespace SportsClub
             foreach (var t in trainers) cbTrainer.Items.Add(t.FullName);
             if (Session.Coach != null) cbTrainer.SelectedItem = Session.Coach.FullName;
             else if (cbTrainer.Items.Count > 0) cbTrainer.SelectedIndex = 0;
-            // populate facilities
-            cbFacility.Items.Clear();
-            if (facilities != null)
-            {
-                cbFacility.DisplayMember = "Name";
-                foreach (var f in facilities) cbFacility.Items.Add(f);
-                if (Session.Facility != null)
-                {
-                    var sel = facilities.FirstOrDefault(x => x.Name == Session.Facility.Name && x.Type == Session.Facility.Type);
-                    if (sel != null) cbFacility.SelectedItem = sel;
-                }
-                else if (!string.IsNullOrWhiteSpace(Session.Location))
-                {
-                    var selByName = facilities.FirstOrDefault(x => x.Name == Session.Location);
-                    if (selByName != null) cbFacility.SelectedItem = selByName;
-                    else if (cbFacility.Items.Count > 0) cbFacility.SelectedIndex = 0;
-                }
-                else if (cbFacility.Items.Count > 0) cbFacility.SelectedIndex = 0;
-            }
+            cbTrainer.SelectedIndexChanged += cbTrainer_SelectedIndexChanged;
+            // populate facilities according to selected trainer
+            PopulateFacilitiesForSelectedTrainer();
 
             // populate members list according to selected facility
             UpdateMembersListForSelectedFacility();
@@ -58,6 +42,52 @@ namespace SportsClub
 
         private void cbFacility_SelectedIndexChanged(object? sender, EventArgs e)
         {
+            UpdateMembersListForSelectedFacility();
+        }
+
+        private void cbTrainer_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            PopulateFacilitiesForSelectedTrainer();
+        }
+
+        private void PopulateFacilitiesForSelectedTrainer()
+        {
+            cbFacility.Items.Clear();
+            if (facilities == null) return;
+            // find selected trainer
+            var trainerName = cbTrainer.SelectedItem?.ToString();
+            Trainer? selTrainer = null;
+            if (!string.IsNullOrWhiteSpace(trainerName)) selTrainer = trainers.FirstOrDefault(t => t.FullName == trainerName);
+
+            IEnumerable<Facility> listToShow;
+            if (selTrainer != null)
+            {
+                listToShow = SpecializationMapping.FilterFacilitiesForTrainer(selTrainer, facilities);
+            }
+            else
+            {
+                listToShow = facilities;
+            }
+
+            cbFacility.DisplayMember = "Name";
+            foreach (var f in listToShow) cbFacility.Items.Add(f);
+
+            // try to restore previously selected facility
+            if (Session.Facility != null)
+            {
+                var sel = listToShow.FirstOrDefault(x => x.Name == Session.Facility.Name && x.Type == Session.Facility.Type);
+                if (sel != null) cbFacility.SelectedItem = sel;
+            }
+            if (cbFacility.SelectedItem == null)
+            {
+                if (!string.IsNullOrWhiteSpace(Session.Location))
+                {
+                    var selByName = listToShow.FirstOrDefault(x => x.Name == Session.Location);
+                    if (selByName != null) cbFacility.SelectedItem = selByName;
+                }
+                if (cbFacility.Items.Count > 0 && cbFacility.SelectedItem == null) cbFacility.SelectedIndex = 0;
+            }
+
             UpdateMembersListForSelectedFacility();
         }
 

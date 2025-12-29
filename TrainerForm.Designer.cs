@@ -6,7 +6,7 @@ namespace SportsClub
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtSpec;
+        private System.Windows.Forms.ComboBox cbSpec;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown nudExp;
         private System.Windows.Forms.Button btnOk;
@@ -26,7 +26,7 @@ namespace SportsClub
             this.label1 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtSpec = new System.Windows.Forms.TextBox();
+            this.cbSpec = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.nudExp = new System.Windows.Forms.NumericUpDown();
             this.btnOk = new System.Windows.Forms.Button();
@@ -36,6 +36,7 @@ namespace SportsClub
             // 
             // label1
             // 
+            this.label1 = new System.Windows.Forms.Label();
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
@@ -59,12 +60,14 @@ namespace SportsClub
             this.label2.TabIndex = 2;
             this.label2.Text = "Specialization:";
             // 
-            // txtSpec
+            // cbSpec
             // 
-            this.txtSpec.Location = new System.Drawing.Point(100, 49);
-            this.txtSpec.Name = "txtSpec";
-            this.txtSpec.Size = new System.Drawing.Size(250, 23);
-            this.txtSpec.TabIndex = 3;
+            this.cbSpec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSpec.FormattingEnabled = true;
+            this.cbSpec.Location = new System.Drawing.Point(100, 49);
+            this.cbSpec.Name = "cbSpec";
+            this.cbSpec.Size = new System.Drawing.Size(250, 23);
+            this.cbSpec.TabIndex = 3;
             // 
             // label3
             // 
@@ -110,7 +113,7 @@ namespace SportsClub
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.nudExp);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtSpec);
+            this.Controls.Add(this.cbSpec);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.label1);

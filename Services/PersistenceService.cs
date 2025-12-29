@@ -14,7 +14,8 @@ namespace SportsClub.Services
             using var sw = new StreamWriter(path, false, Encoding.UTF8);
             foreach (var m in members)
             {
-                sw.WriteLine($"{m.Id}|{m.FullName}|{m.Registered:O}|{m.GetVisits()}|{m.IsActive}|{m.Subscription?.Type}");
+                // Format: Id|FullName|Registered|IsActive|SubscriptionType
+                sw.WriteLine($"{m.Id}|{m.FullName}|{m.Registered:O}|{m.IsActive}|{m.Subscription?.Type}");
             }
         }
 
@@ -30,17 +31,16 @@ namespace SportsClub.Services
                 var name = parts[1];
                 DateTime reg = DateTime.Now;
                 DateTime.TryParse(parts[2], null, System.Globalization.DateTimeStyles.RoundtripKind, out reg);
-                int visits = 0; int.TryParse(parts[3], out visits);
-                bool isActive = true; bool.TryParse(parts.Length > 4 ? parts[4] : "True", out isActive);
-                var subType = parts.Length > 5 ? parts[5] : string.Empty;
+                // New format: id|name|reg|isActive|sub?
+                bool isActive = true;
+                var subType = parts.Length > 4 ? parts[4] : string.Empty;
 
                 var m = new Member(name)
                 {
                     Id = gid,
-                    Registered = reg,
-                    Visits = visits
+                    Registered = reg
                 };
-                m.IsActive = isActive;
+                m.IsActive = bool.TryParse(parts.Length > 3 ? parts[3] : "True", out var a) ? a : true;
                 if (!string.IsNullOrEmpty(subType)) m.Subscription = subType.Contains("Premium") ? new PremiumMembership() as Membership : new BasicMembership();
                 list.Add(m);
             }
@@ -54,10 +54,10 @@ namespace SportsClub.Services
             bw.Write(members.Count);
             foreach (var m in members)
             {
+                // Binary format: Id, FullName, Registered, IsActive, SubscriptionType
                 bw.Write(m.Id.ToString());
                 bw.Write(m.FullName ?? "");
                 bw.Write(m.Registered.ToBinary());
-                bw.Write(m.GetVisits());
                 bw.Write(m.IsActive);
                 bw.Write(m.Subscription?.Type ?? "");
             }
@@ -75,14 +75,12 @@ namespace SportsClub.Services
                 var id = br.ReadString();
                 var name = br.ReadString();
                 var reg = DateTime.FromBinary(br.ReadInt64());
-                var visits = br.ReadInt32();
                 var isActive = br.ReadBoolean();
                 var subType = br.ReadString();
                 var m = new Member(name)
                 {
                     Id = Guid.TryParse(id, out var parsed) ? parsed : Guid.NewGuid(),
-                    Registered = reg,
-                    Visits = visits
+                    Registered = reg
                 };
                 m.IsActive = isActive;
                 if (!string.IsNullOrEmpty(subType)) m.Subscription = subType.Contains("Premium") ? new PremiumMembership() as Membership : new BasicMembership();
