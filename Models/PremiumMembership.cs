@@ -23,7 +23,6 @@ namespace SportsClub.Models
 
         public override double GetPrice(int days, int visits)
         {
-            // Premium members have unlimited visits — charge only by days
             return GetPriceForDays(days);
         }
     }
