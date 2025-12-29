@@ -9,6 +9,9 @@ namespace SportsClub.Services
 {
     public static class PersistenceService
     {
+        // Requirement notes:
+        // - implements text, binary and XML persistence (Requirement 16)
+        // - provides Save/Load for app state
         public static void SaveAsText(string path, List<Member> members)
         {
             using var sw = new StreamWriter(path, false, Encoding.UTF8);
@@ -29,18 +32,18 @@ namespace SportsClub.Services
                 if (parts.Length < 4) continue;
                 if (!Guid.TryParse(parts[0], out var gid)) gid = Guid.NewGuid();
                 var name = parts[1];
-                DateTime reg = DateTime.Now;
+                _ = DateTime.Now;
+                DateTime reg;
                 DateTime.TryParse(parts[2], null, System.Globalization.DateTimeStyles.RoundtripKind, out reg);
                 // New format: id|name|reg|isActive|sub?
-                bool isActive = true;
                 var subType = parts.Length > 4 ? parts[4] : string.Empty;
 
                 var m = new Member(name)
                 {
                     Id = gid,
-                    Registered = reg
+                    Registered = reg,
+                    IsActive = !bool.TryParse(parts.Length > 3 ? parts[3] : "True", out var a) || a
                 };
-                m.IsActive = bool.TryParse(parts.Length > 3 ? parts[3] : "True", out var a) ? a : true;
                 if (!string.IsNullOrEmpty(subType)) m.Subscription = subType.Contains("Premium") ? new PremiumMembership() as Membership : new BasicMembership();
                 list.Add(m);
             }
@@ -80,9 +83,9 @@ namespace SportsClub.Services
                 var m = new Member(name)
                 {
                     Id = Guid.TryParse(id, out var parsed) ? parsed : Guid.NewGuid(),
-                    Registered = reg
+                    Registered = reg,
+                    IsActive = isActive
                 };
-                m.IsActive = isActive;
                 if (!string.IsNullOrEmpty(subType)) m.Subscription = subType.Contains("Premium") ? new PremiumMembership() as Membership : new BasicMembership();
                 list.Add(m);
             }
@@ -99,7 +102,7 @@ namespace SportsClub.Services
         public static List<Member> LoadFromXml(string path)
         {
             var xs = new XmlSerializer(typeof(List<Member>));
-            if (!File.Exists(path)) return new List<Member>();
+            if (!File.Exists(path)) return [];
             using var fs = new FileStream(path, FileMode.Open);
             return (List<Member>)xs.Deserialize(fs)!;
         }
@@ -123,7 +126,7 @@ namespace SportsClub.Services
         public static AppState LoadStateXml(string path)
         {
             var xs = new XmlSerializer(typeof(AppState));
-            if (!File.Exists(path)) return new AppState { Members = new List<Member>(), Trainers = new List<Trainer>(), Sessions = new List<TrainingSession>(), Facilities = new List<Facility>() };
+            if (!File.Exists(path)) return new AppState { Members = [], Trainers = [], Sessions = [], Facilities = [] };
             using var fs = new FileStream(path, FileMode.Open);
             return (AppState)xs.Deserialize(fs)!;
         }

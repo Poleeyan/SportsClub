@@ -21,7 +21,7 @@ namespace SportsClub
             base.OnLoad(e);
             txtName.Text = Trainer.FullName;
             cbSpec.Items.Clear();
-            cbSpec.Items.AddRange(SpecializationMapping.AllSpecializations.ToArray());
+            cbSpec.Items.AddRange([.. SpecializationMapping.AllSpecializations]);
             if (!string.IsNullOrWhiteSpace(Trainer.Specialization) && cbSpec.Items.Contains(Trainer.Specialization)) cbSpec.SelectedItem = Trainer.Specialization;
             else if (cbSpec.Items.Count > 0) cbSpec.SelectedIndex = 0;
             nudExp.Value = Trainer.ExperienceYears;

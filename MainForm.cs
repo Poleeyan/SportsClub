@@ -9,20 +9,20 @@ namespace SportsClub
 {
     public partial class MainForm : Form
     {
-        private List<Member> members = new();
-        private List<Trainer> trainers = new();
-        private List<TrainingSession> sessions = new();
-        private List<Facility> facilities = new();
+        private List<Member> members = [];
+        private List<Trainer> trainers = [];
+        private List<TrainingSession> sessions = [];
+        private readonly List<Facility> facilities = [];
 
         public MainForm()
         {
             // static facilities: зал, басейн, тенісний корт
-            facilities = new List<Facility>
-            {
-                new Facility("Зал", "Hall", 50),
-                new Facility("Басейн", "Pool", 20),
-                new Facility("Тенісний корт", "Tennis Court", 4)
-            };
+            facilities =
+            [
+                new("Зал", "Hall", 50),
+                new("Басейн", "Pool", 20),
+                new("Тенісний корт", "Tennis Court", 4)
+            ];
             InitializeComponent();
         }
 
@@ -40,16 +40,18 @@ namespace SportsClub
         private void BtnEdit_Click(object? sender, EventArgs e)
         {
             if (dgvMembers!.CurrentRow == null) { MessageBox.Show("Select a member"); return; }
-            var idx = dgvMembers.CurrentRow.Index;
+            var idx = dgvMembers!.CurrentRow!.Index;
             if (idx < 0 || idx >= members.Count) return;
             var m = members[idx];
-            var form = new MemberForm();
-            form.Member = new Member(m.FullName)
+            var form = new MemberForm
             {
-                Id = m.Id,
-                Registered = m.Registered,
-                Subscription = m.Subscription,
-                PurchasedDays = m.PurchasedDays
+                Member = new Member(m.FullName)
+                {
+                    Id = m.Id,
+                    Registered = m.Registered,
+                    Subscription = m.Subscription,
+                    PurchasedDays = m.PurchasedDays
+                }
             };
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -61,7 +63,7 @@ namespace SportsClub
         private void BtnDelete_Click(object? sender, EventArgs e)
         {
             if (dgvMembers!.CurrentRow == null) { MessageBox.Show("Select a member"); return; }
-            var idx = dgvMembers.CurrentRow.Index;
+            var idx = dgvMembers!.CurrentRow!.Index;
             if (idx < 0 || idx >= members.Count) return;
             if (MessageBox.Show("Delete selected member?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -73,7 +75,7 @@ namespace SportsClub
         private void RefreshMembersGrid()
         {
             dgvMembers!.DataSource = null;
-            string FormatSession(TrainingSession s)
+            static string FormatSession(TrainingSession s)
             {
                 var spec = s.Coach?.Specialization ?? string.Empty;
                 var place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location;
@@ -91,10 +93,11 @@ namespace SportsClub
             }).ToList();
             dgvMembers!.DataSource = view;
             // format Price column as currency if present
-            if (dgvMembers.Columns.Contains("Price"))
+            var _priceCol = dgvMembers!.Columns["Price"];
+            if (_priceCol != null)
             {
-                dgvMembers.Columns["Price"].DefaultCellStyle.Format = "C2";
-                dgvMembers.Columns["Price"].DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+                _priceCol.DefaultCellStyle.Format = "C2";
+                _priceCol.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             }
         }
 
@@ -117,18 +120,19 @@ namespace SportsClub
             }).ToList();
             dgvSessions!.DataSource = view;
             // rename TrainingType column header to the requested Ukrainian label
-            if (dgvSessions.Columns.Contains("TrainingType"))
+            var _ttCol = dgvSessions!.Columns["TrainingType"];
+            if (_ttCol != null)
             {
-                dgvSessions.Columns["TrainingType"].HeaderText = "Тренерування";
+                _ttCol.HeaderText = "Тренерування";
             }
         }
 
         private void RefreshFacilitiesGrid()
         {
             if (dgvFacilities == null) return; // facilities tab removed; nothing to refresh
-            dgvFacilities.DataSource = null;
+            dgvFacilities!.DataSource = null;
             var view = facilities.Select(f => new { f.Name, f.Type, f.Capacity }).ToList();
-            dgvFacilities.DataSource = view;
+            dgvFacilities!.DataSource = view;
         }
 
         private void RefreshAllGrids()
@@ -154,7 +158,7 @@ namespace SportsClub
         private void BtnEditTrainer_Click(object? sender, EventArgs e)
         {
             if (dgvTrainers!.CurrentRow == null) return;
-            var idx = dgvTrainers.CurrentRow.Index;
+            var idx = dgvTrainers!.CurrentRow!.Index;
             if (idx < 0 || idx >= trainers.Count) return;
             var t = trainers[idx];
             using var f = new TrainerForm();
@@ -169,7 +173,7 @@ namespace SportsClub
         private void BtnDeleteTrainer_Click(object? sender, EventArgs e)
         {
             if (dgvTrainers!.CurrentRow == null) return;
-            var idx = dgvTrainers.CurrentRow.Index;
+            var idx = dgvTrainers!.CurrentRow!.Index;
             if (idx < 0 || idx >= trainers.Count) return;
             if (MessageBox.Show("Delete trainer?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -192,7 +196,7 @@ namespace SportsClub
         private void BtnEditSession_Click(object? sender, EventArgs e)
         {
             if (dgvSessions!.CurrentRow == null) return;
-            var idx = dgvSessions.CurrentRow.Index;
+            var idx = dgvSessions!.CurrentRow!.Index;
             if (idx < 0 || idx >= sessions.Count) return;
             var s = sessions[idx];
             using var f = new SessionForm(trainers, members, facilities);
@@ -207,7 +211,7 @@ namespace SportsClub
         private void BtnDeleteSession_Click(object? sender, EventArgs e)
         {
             if (dgvSessions!.CurrentRow == null) return;
-            var idx = dgvSessions.CurrentRow.Index;
+            var idx = dgvSessions!.CurrentRow!.Index;
             if (idx < 0 || idx >= sessions.Count) return;
             if (MessageBox.Show("Delete session?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -230,7 +234,7 @@ namespace SportsClub
         private void BtnEditFacility_Click(object? sender, EventArgs e)
         {
             if (dgvFacilities!.CurrentRow == null) return;
-            var idx = dgvFacilities.CurrentRow.Index;
+            var idx = dgvFacilities!.CurrentRow!.Index;
             if (idx < 0 || idx >= facilities.Count) return;
             var it = facilities[idx];
             using var f = new FacilityForm();
@@ -245,7 +249,7 @@ namespace SportsClub
         private void BtnDeleteFacility_Click(object? sender, EventArgs e)
         {
             if (dgvFacilities!.CurrentRow == null) return;
-            var idx = dgvFacilities.CurrentRow.Index;
+            var idx = dgvFacilities!.CurrentRow!.Index;
             if (idx < 0 || idx >= facilities.Count) return;
             if (MessageBox.Show("Delete facility?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {

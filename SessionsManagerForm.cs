@@ -8,10 +8,10 @@ namespace SportsClub
 {
     public partial class SessionsManagerForm : Form
     {
-        private List<TrainingSession> sessions;
-        private List<Trainer> trainers;
-        private List<Member> members;
-        private List<Facility> facilities;
+        private readonly List<TrainingSession> sessions;
+        private readonly List<Trainer> trainers;
+        private readonly List<Member> members;
+        private readonly List<Facility> facilities;
 
         public SessionsManagerForm(List<TrainingSession> sessions, List<Trainer> trainers, List<Member> members, List<Facility> facilities)
         {

@@ -7,7 +7,7 @@ namespace SportsClub.Models
     {
         public DateTime Date { get; set; }
         public Trainer? Coach { get; set; }
-        public List<Member> Participants { get; set; } = new();
+        public List<Member> Participants { get; set; } = [];
         public Facility? Facility { get; set; }
         public string Location { get; set; } = string.Empty;
 

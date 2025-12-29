@@ -8,7 +8,7 @@ namespace SportsClub
 {
     public partial class FacilitiesManagerForm : Form
     {
-        private List<Facility> facilities;
+        private readonly List<Facility> facilities;
 
         public FacilitiesManagerForm(List<Facility> facilities)
         {

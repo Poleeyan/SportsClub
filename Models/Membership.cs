@@ -6,6 +6,10 @@ namespace SportsClub.Models
 {
     [XmlInclude(typeof(BasicMembership))]
     [XmlInclude(typeof(PremiumMembership))]
+    // Requirement notes:
+    // - demonstrates abstract class and inheritance (Requirement 7)
+    // - contains protected member `createdAt` (Requirement 8)
+    // - provides virtual methods for dynamic polymorphism (Requirement 6,12)
     public abstract class Membership
     {
         [XmlIgnore]
@@ -31,7 +35,7 @@ namespace SportsClub.Models
 
         public virtual string GetInfo()
         {
-            return $"{Type} - {Price.ToString("C")} for {DurationDays} days";
+            return $"{Type} - {Price:C} for {DurationDays} days";
         }
 
         // Calculate price for arbitrary number of days based on the

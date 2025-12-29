@@ -8,7 +8,7 @@ namespace SportsClub
 {
     public partial class TrainersManagerForm : Form
     {
-        private List<Trainer> trainers;
+        private readonly List<Trainer> trainers;
 
         public TrainersManagerForm(List<Trainer> trainers)
         {

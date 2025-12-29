@@ -7,13 +7,15 @@ namespace SportsClub
 {
     partial class MainForm
     {
+        // Requirement notes:
+        // - GUI with multiple dialogs and controls (Requirement 1,15)
+        // - Uses TabControl and per-entity DataGridViews
         private System.ComponentModel.IContainer? components = null;
         private DataGridView? dgvMembers;
         private DataGridView? dgvTrainers;
         private DataGridView? dgvSessions;
         private DataGridView? dgvFacilities;
-        private TextBox? txtName;
-        private ComboBox? cbSubscription;
+        
         private Button? btnSaveXml, btnLoadXml;
 
         protected override void Dispose(bool disposing)
@@ -131,6 +133,9 @@ namespace SportsClub
             tabs.TabPages.Add(tabTrainers);
             tabs.TabPages.Add(tabSessions);
             // facilities are static; no editable Facilities tab
+
+            // create a hidden facilities grid to satisfy code paths that reference it
+            dgvFacilities = new DataGridView { Dock = DockStyle.Fill, ReadOnly = true, Visible = false };
 
             root.Controls.Add(tabs, 0, 1);
 

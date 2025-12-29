@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SportsClub.Models
 {
+    // Requirement notes:
+    // - implements IComparable<Member> to demonstrate Comparable (Requirement 5)
+    // - has parameterless constructor and delegated constructor (Requirements 3,4)
     public class Member : IComparable<Member>
     {
         // минимум 4 элементов данных
@@ -32,7 +35,7 @@ namespace SportsClub.Models
 
         public override string ToString()
         {
-            return $"{FullName} ({Id.ToString().Substring(0,6)}) - {Subscription?.GetInfo() ?? "No sub"}";
+            return $"{FullName} ({Id.ToString()[..6]}) - {Subscription?.GetInfo() ?? "No sub"}";
         }
 
         public int CompareTo(Member? other)

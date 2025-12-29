@@ -9,9 +9,9 @@ namespace SportsClub
 {
     public partial class SessionForm : Form
     {
-        private List<Trainer> trainers;
-        private List<Member> members;
-        private List<Facility> facilities;
+        private readonly List<Trainer> trainers;
+        private readonly List<Member> members;
+        private readonly List<Facility> facilities;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TrainingSession Session { get; set; } = new TrainingSession();
@@ -96,15 +96,14 @@ namespace SportsClub
             clbMembers.Items.Clear();
             if (members == null) return;
 
-            var selFacility = cbFacility.SelectedItem as Facility;
             bool premiumOnly = false;
-            if (selFacility != null)
+            if (cbFacility.SelectedItem is Facility selFacility)
             {
                 var txt = ((selFacility.Type ?? "") + " " + (selFacility.Name ?? "")).ToLowerInvariant();
                 premiumOnly = txt.Contains("pool") || txt.Contains("басейн") || txt.Contains("tennis") || txt.Contains("теніс") || txt.Contains("корт");
             }
 
-            var list = premiumOnly ? members.Where(m => m.Subscription != null && m.Subscription.Type == "Premium").ToList() : members;
+            var list = premiumOnly ? [.. members.Where(m => m.Subscription != null && m.Subscription.Type == "Premium")] : members;
             foreach (var m in list) clbMembers.Items.Add(m.FullName);
 
             // restore checked state from Session.Participants if any
