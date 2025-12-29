@@ -48,7 +48,6 @@ namespace SportsClub
             {
                 Id = m.Id,
                 Registered = m.Registered,
-                Visits = m.Visits,
                 Subscription = m.Subscription,
                 PurchasedDays = m.PurchasedDays
             };
@@ -74,13 +73,21 @@ namespace SportsClub
         private void RefreshMembersGrid()
         {
             dgvMembers!.DataSource = null;
+            string FormatSession(TrainingSession s)
+            {
+                var spec = s.Coach?.Specialization ?? string.Empty;
+                var place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location;
+                var prefix = string.IsNullOrEmpty(spec) ? string.Empty : spec + ": ";
+                return $"{s.Date:yyyy-MM-dd} ({prefix}{place})";
+            }
+
             var view = members.Select(m => new
             {
                 m.FullName,
-                Visits = (m.Subscription != null && m.Subscription.Type == "Premium") ? "Unlimited" : (object)m.GetVisits(),
+                Sessions = string.Join(", ", sessions.Where(s => s.Participants != null && s.Participants.Any(p => p.Id == m.Id)).Select(s => FormatSession(s))),
                 Subscription = m.Subscription?.Type,
                 Days = m.PurchasedDays,
-                Price = m.Subscription != null ? m.Subscription.GetPrice(m.PurchasedDays, m.GetVisits()) : 0.0
+                Price = m.Subscription != null ? m.Subscription.GetPrice(m.PurchasedDays, 0) : 0.0
             }).ToList();
             dgvMembers!.DataSource = view;
             // format Price column as currency if present
@@ -101,8 +108,19 @@ namespace SportsClub
         private void RefreshSessionsGrid()
         {
             dgvSessions!.DataSource = null;
-            var view = sessions.Select(s => new { Date = s.Date.ToString("g"), Coach = s.Coach?.FullName, Participants = s.Participants?.Count ?? 0, Place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location }).ToList();
+            var view = sessions.Select(s => new {
+                Date = s.Date.ToString("g"),
+                Coach = s.Coach?.FullName,
+                TrainingType = s.Coach?.Specialization,
+                Participants = s.Participants?.Count ?? 0,
+                Place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location
+            }).ToList();
             dgvSessions!.DataSource = view;
+            // rename TrainingType column header to the requested Ukrainian label
+            if (dgvSessions.Columns.Contains("TrainingType"))
+            {
+                dgvSessions.Columns["TrainingType"].HeaderText = "Тренерування";
+            }
         }
 
         private void RefreshFacilitiesGrid()
@@ -167,7 +185,7 @@ namespace SportsClub
             if (f.ShowDialog() == DialogResult.OK)
             {
                 sessions.Add(f.Session);
-                RefreshSessionsGrid();
+                RefreshAllGrids();
             }
         }
 
@@ -182,7 +200,7 @@ namespace SportsClub
             if (f.ShowDialog() == DialogResult.OK)
             {
                 sessions[idx] = f.Session;
-                RefreshSessionsGrid();
+                RefreshAllGrids();
             }
         }
 
@@ -194,7 +212,7 @@ namespace SportsClub
             if (MessageBox.Show("Delete session?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 sessions.RemoveAt(idx);
-                RefreshSessionsGrid();
+                RefreshAllGrids();
             }
         }
 
