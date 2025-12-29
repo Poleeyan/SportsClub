@@ -124,6 +124,9 @@ namespace SportsClub
             sessionsButtons.Controls.Add(btnAddSession);
             sessionsButtons.Controls.Add(btnEditSession);
             sessionsButtons.Controls.Add(btnDeleteSession);
+            var btnExportSession = new Button { Text = "Export", AutoSize = true, Margin = new Padding(6) };
+            btnExportSession.Click += BtnExportSessions_Click;
+            sessionsButtons.Controls.Add(btnExportSession);
             sessionsPanel.Controls.Add(dgvSessions);
             sessionsPanel.Controls.Add(sessionsButtons);
             tabSessions.Controls.Add(sessionsPanel);

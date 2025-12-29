@@ -102,7 +102,7 @@ namespace SportsClub.Services
         public static List<Member> LoadFromXml(string path)
         {
             var xs = new XmlSerializer(typeof(List<Member>));
-            if (!File.Exists(path)) return [];
+            if (!File.Exists(path)) return new List<Member>();
             using var fs = new FileStream(path, FileMode.Open);
             return (List<Member>)xs.Deserialize(fs)!;
         }
@@ -126,7 +126,7 @@ namespace SportsClub.Services
         public static AppState LoadStateXml(string path)
         {
             var xs = new XmlSerializer(typeof(AppState));
-            if (!File.Exists(path)) return new AppState { Members = [], Trainers = [], Sessions = [], Facilities = [] };
+            if (!File.Exists(path)) return new AppState { Members = new List<Member>(), Trainers = new List<Trainer>(), Sessions = new List<TrainingSession>(), Facilities = new List<Facility>() };
             using var fs = new FileStream(path, FileMode.Open);
             return (AppState)xs.Deserialize(fs)!;
         }

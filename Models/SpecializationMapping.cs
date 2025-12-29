@@ -34,7 +34,7 @@ namespace SportsClub.Models
 
         public static IEnumerable<Facility> FilterFacilitiesForTrainer(Trainer trainer, IEnumerable<Facility> allFacilities)
         {
-            if (trainer == null || allFacilities == null) return [];
+            if (trainer == null || allFacilities == null) return new List<Facility>();
             var spec = trainer.Specialization ?? string.Empty;
             if (string.IsNullOrWhiteSpace(spec)) return allFacilities;
             return allFacilities.Where(f => FacilitySupportsSpecialization(f, spec));

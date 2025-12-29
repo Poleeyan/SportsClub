@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using SportsClub.Models;
+using SportsClub.Services;
 
 namespace SportsClub
 {
@@ -68,6 +69,23 @@ namespace SportsClub
         {
             dgv.DataSource = null;
             dgv.DataSource = sessions.Select(s => new { Date = s.Date.ToString("g"), Coach = s.Coach?.FullName, Participants = s.Participants?.Count ?? 0, Place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location }).ToList();
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            using var dlg = new SaveFileDialog();
+            dlg.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            dlg.FileName = "attendance_report.csv";
+            if (dlg.ShowDialog() != DialogResult.OK) return;
+            try
+            {
+                ReportsService.GenerateAttendanceCsv(dlg.FileName, sessions);
+                MessageBox.Show("Report saved: " + dlg.FileName, "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to save report: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

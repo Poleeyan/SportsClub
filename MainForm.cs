@@ -9,20 +9,20 @@ namespace SportsClub
 {
     public partial class MainForm : Form
     {
-        private List<Member> members = [];
-        private List<Trainer> trainers = [];
-        private List<TrainingSession> sessions = [];
-        private readonly List<Facility> facilities = [];
+        private List<Member> members = new List<Member>();
+        private List<Trainer> trainers = new List<Trainer>();
+        private List<TrainingSession> sessions = new List<TrainingSession>();
+        private readonly List<Facility> facilities = new List<Facility>();
 
         public MainForm()
         {
             // static facilities: зал, басейн, тенісний корт
-            facilities =
-            [
-                new("Зал", "Hall", 50),
-                new("Басейн", "Pool", 20),
-                new("Тенісний корт", "Tennis Court", 4)
-            ];
+            facilities = new List<Facility>
+            {
+                new Facility("Зал", "Hall", 50),
+                new Facility("Басейн", "Pool", 20),
+                new Facility("Тенісний корт", "Tennis Court", 4)
+            };
             InitializeComponent();
         }
 
@@ -255,6 +255,23 @@ namespace SportsClub
             {
                 facilities.RemoveAt(idx);
                 RefreshFacilitiesGrid();
+            }
+        }
+
+        private void BtnExportSessions_Click(object? sender, EventArgs e)
+        {
+            using var dlg = new SaveFileDialog();
+            dlg.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            dlg.FileName = "attendance_report.csv";
+            if (dlg.ShowDialog() != DialogResult.OK) return;
+            try
+            {
+                ReportsService.GenerateAttendanceCsv(dlg.FileName, sessions);
+                MessageBox.Show("Report saved: " + dlg.FileName, "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to save report: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
