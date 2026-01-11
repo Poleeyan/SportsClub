@@ -34,6 +34,10 @@ namespace SportsClub
                 new Facility("Тенісний корт", "Tennis Court", 4, requiredLevel: 3) // Тільки Premium
             };
             InitializeComponent();
+            if (dgvMembers != null)
+            {
+                dgvMembers.CellContentClick += DgvMembers_CellContentClick;
+            }
         }
 
         private void BtnAdd_Click(object? sender, EventArgs e)
@@ -96,7 +100,6 @@ namespace SportsClub
             var view = members.Select(m => new
             {
                 m.FullName,
-                Sessions = string.Join(", ", sessions.Where(s => s.Participants != null && s.Participants.Any(p => p.Id == m.Id)).Select(s => FormatSession(s))),
                 Subscription = m.Subscription?.Type,
                 // compute remaining days and active flag based on subscription validity
                 RemainingDays = m.Subscription != null ? Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days)) : 0,
@@ -112,7 +115,19 @@ namespace SportsClub
                 members[i].IsActive = remaining > 0;
             }
             dgvMembers!.DataSource = view;
-            // format Price column as currency if present
+            // add per-row 'View Sessions' button and format price
+            if (!dgvMembers!.Columns.Contains("ViewSessions"))
+            {
+                var btnCol = new DataGridViewButtonColumn
+                {
+                    Name = "ViewSessions",
+                    HeaderText = "Sessions",
+                    Text = "View",
+                    UseColumnTextForButtonValue = true,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                };
+                dgvMembers!.Columns.Add(btnCol);
+            }
             var _priceCol = dgvMembers!.Columns["Price"];
             if (_priceCol != null)
             {
@@ -277,11 +292,26 @@ namespace SportsClub
         private void BtnCalendar_Click(object? sender, EventArgs e)
         {
             if (dgvMembers!.CurrentRow == null) { MessageBox.Show("Select a member"); return; }
-            var idx = dgvMembers!.CurrentRow!.Index;
-            if (idx < 0 || idx >= members.Count) return;
-            var m = members[idx];
+            // fallback: open viewer for current selection
+            var name = dgvMembers!.CurrentRow!.Cells["FullName"]?.Value?.ToString();
+            var m = members.FirstOrDefault(x => x.FullName == name);
+            if (m == null) return;
             using var f = new MemberCalendarForm(m, sessions);
             f.ShowDialog();
+        }
+
+        private void DgvMembers_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvMembers == null || e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            var col = dgvMembers.Columns[e.ColumnIndex];
+            if (col.Name == "ViewSessions")
+            {
+                var name = dgvMembers.Rows[e.RowIndex].Cells["FullName"]?.Value?.ToString();
+                var m = members.FirstOrDefault(x => x.FullName == name);
+                if (m == null) return;
+                using var f = new MemberCalendarForm(m, sessions);
+                f.ShowDialog();
+            }
         }
 
         private void RefreshFacilitiesGrid()
