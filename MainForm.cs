@@ -29,9 +29,9 @@ namespace SportsClub
             // static facilities: зал, басейн, тенісний корт
             facilities = new List<Facility>
             {
-                new Facility("Зал", "Hall", 50),
-                new Facility("Басейн", "Pool", 20),
-                new Facility("Тенісний корт", "Tennis Court", 4)
+                new Facility("Зал", "Hall", 50, requiredLevel: 1),        // Доступ для Basic
+                new Facility("Басейн", "Pool", 20, requiredLevel: 3),      // Тільки Premium
+                new Facility("Тенісний корт", "Tennis Court", 4, requiredLevel: 3) // Тільки Premium
             };
             InitializeComponent();
         }
@@ -59,8 +59,7 @@ namespace SportsClub
                 {
                     Id = m.Id,
                     Registered = m.Registered,
-                    Subscription = m.Subscription,
-                    PurchasedDays = m.PurchasedDays
+                    Subscription = m.Subscription
                 }
             };
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -102,7 +101,7 @@ namespace SportsClub
                 RemainingDays = m.Subscription != null ? Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days)) : 0,
                 Active = m.Subscription != null ? Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days)) > 0 : false,
                 // prorated price for remaining days
-                Price = m.Subscription != null ? m.Subscription.GetPrice(Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days)), 0) : 0.0
+                Price = m.Subscription != null ? m.Subscription.GetPrice(Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days))) : 0.0
             }).ToList();
 
             // update IsActive flags based on remaining days

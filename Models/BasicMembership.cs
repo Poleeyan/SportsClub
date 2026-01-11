@@ -36,9 +36,8 @@ namespace SportsClub.Models
             return base.GetInfo() + " (Basic access)";
         }
 
-        public override double GetPrice(int days, int visits)
+        public override double GetPrice(int days)
         {
-            // Price for Basic is day-based only (visits removed)
             return GetPriceForDays(days);
         }
     }

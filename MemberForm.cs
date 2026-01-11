@@ -57,8 +57,6 @@ namespace SportsClub
             {
                 Member.Subscription = sel.Contains("Annual") ? new BasicMembership(Membership.MembershipPeriod.Annual) as Membership : new BasicMembership(Membership.MembershipPeriod.Monthly) as Membership;
             }
-            // Purchased days are no longer set manually; keep existing value for compatibility
-            // Member.PurchasedDays remains unchanged so legacy data is preserved
             // update registration/start date from picker
             Member.Registered = dtpStart.Value;
             DialogResult = DialogResult.OK;

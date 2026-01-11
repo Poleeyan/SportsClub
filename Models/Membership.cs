@@ -16,17 +16,11 @@ namespace SportsClub.Models
 
         public MembershipPeriod Period { get; set; } = MembershipPeriod.Monthly;
 
-        [XmlIgnore]
-        protected DateTime createdAt; // protected example, ignored for XML
-
         public string Type { get; set; } = string.Empty;
         public double Price { get; set; } = 0.0;
         public int DurationDays { get; set; } = 0;
 
-        public Membership()
-        {
-            createdAt = DateTime.Now;
-        }
+        public Membership() { }
 
         public Membership(string type, double price, int days) : this()
         {
@@ -49,7 +43,7 @@ namespace SportsClub.Models
             return Price * ((double)days / DurationDays);
         }
 
-        public virtual double GetPrice(int days, int visits)
+        public virtual double GetPrice(int days)
         {
             return GetPriceForDays(days);
         }

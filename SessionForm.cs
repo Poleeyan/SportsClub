@@ -96,14 +96,13 @@ namespace SportsClub
             clbMembers.Items.Clear();
             if (members == null) return;
 
-            bool premiumOnly = false;
+            int requiredLevel = 1;
             if (cbFacility.SelectedItem is Facility selFacility)
             {
-                var txt = ((selFacility.Type ?? "") + " " + (selFacility.Name ?? "")).ToLowerInvariant();
-                premiumOnly = txt.Contains("pool") || txt.Contains("басейн") || txt.Contains("tennis") || txt.Contains("теніс") || txt.Contains("корт");
+                requiredLevel = selFacility.RequiredAccessLevel;
             }
 
-            var list = premiumOnly ? members.Where(m => m.Subscription != null && (m.Subscription.Type ?? "").StartsWith("Premium")).ToList() : members.ToList();
+            var list = members.Where(m => m.Subscription == null || m.Subscription.GetAccessLevel() >= requiredLevel).ToList();
             foreach (var m in list) clbMembers.Items.Add(m.FullName);
 
             // restore checked state from Session.Participants if any
@@ -141,17 +140,13 @@ namespace SportsClub
             var selFacility = cbFacility.SelectedItem as Facility;
             if (selFacility != null)
             {
-                // premium-only check for pool/tennis (support both English and Ukrainian names)
-                var txt = ((selFacility.Type ?? "") + " " + (selFacility.Name ?? "")).ToLowerInvariant();
-                bool premiumOnly = txt.Contains("pool") || txt.Contains("басейн") || txt.Contains("tennis") || txt.Contains("теніс") || txt.Contains("корт");
-                if (premiumOnly)
+                // Перевірка рівня доступу через GetAccessLevel()
+                int requiredLevel = selFacility.RequiredAccessLevel;
+                var insufficientAccess = selected.Where(m => m.Subscription == null || m.Subscription.GetAccessLevel() < requiredLevel).ToList();
+                if (insufficientAccess.Any())
                 {
-                    var notPremium = selected.Where(m => m.Subscription == null || !(m.Subscription.Type ?? "").StartsWith("Premium")).ToList();
-                    if (notPremium.Any())
-                    {
-                        MessageBox.Show("Training in pool or tennis court is allowed only for Premium members. Remove non-premium participants or choose another place.");
-                        return;
-                    }
+                    MessageBox.Show($"Це приміщення ({selFacility.Name}) вимагає рівень доступу {requiredLevel}. Видаліть учасників без необхідної підписки або оберіть інше місце.");
+                    return;
                 }
             }
 

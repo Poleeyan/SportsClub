@@ -141,6 +141,7 @@
         <Name>Зал</Name>
         <Type>Hall</Type>
         <Capacity>50</Capacity>
+        <RequiredAccessLevel>1</RequiredAccessLevel>
       </Facility>
       <Location>Зал</Location>
     </TrainingSession>
@@ -171,6 +172,7 @@
         <Name>Тенісний корт</Name>
         <Type>Tennis Court</Type>
         <Capacity>4</Capacity>
+        <RequiredAccessLevel>3</RequiredAccessLevel>
       </Facility>
       <Location>Тенісний корт</Location>
     </TrainingSession>
@@ -201,6 +203,7 @@
         <Name>Басейн</Name>
         <Type>Pool</Type>
         <Capacity>20</Capacity>
+        <RequiredAccessLevel>3</RequiredAccessLevel>
       </Facility>
       <Location>Басейн</Location>
     </TrainingSession>
@@ -257,6 +260,7 @@
         <Name>Зал</Name>
         <Type>Hall</Type>
         <Capacity>50</Capacity>
+        <RequiredAccessLevel>1</RequiredAccessLevel>
       </Facility>
       <Location>Зал</Location>
     </TrainingSession>
@@ -287,6 +291,7 @@
         <Name>Тенісний корт</Name>
         <Type>Tennis Court</Type>
         <Capacity>4</Capacity>
+        <RequiredAccessLevel>3</RequiredAccessLevel>
       </Facility>
       <Location>Тенісний корт</Location>
     </TrainingSession>
@@ -317,6 +322,38 @@
         <Name>Басейн</Name>
         <Type>Pool</Type>
         <Capacity>20</Capacity>
+        <RequiredAccessLevel>3</RequiredAccessLevel>
+      </Facility>
+      <Location>Басейн</Location>
+    </TrainingSession>
+    <TrainingSession>
+      <Date>2026-01-21T22:42:23.966</Date>
+      <Coach>
+        <FullName>Віктор</FullName>
+        <Specialization>Спортивне плавання</Specialization>
+        <ExperienceYears>15</ExperienceYears>
+      </Coach>
+      <Participants>
+        <Member>
+          <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
+          <FullName>Андрій</FullName>
+          <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
+          <Subscription xsi:type="PremiumMembership">
+            <Period>Monthly</Period>
+            <Type>Premium (Monthly)</Type>
+            <Price>100</Price>
+            <DurationDays>30</DurationDays>
+            <HasPoolAccess>true</HasPoolAccess>
+          </Subscription>
+          <IsActive>true</IsActive>
+          <PurchasedDays>40</PurchasedDays>
+        </Member>
+      </Participants>
+      <Facility>
+        <Name>Басейн</Name>
+        <Type>Pool</Type>
+        <Capacity>20</Capacity>
+        <RequiredAccessLevel>3</RequiredAccessLevel>
       </Facility>
       <Location>Басейн</Location>
     </TrainingSession>
@@ -326,16 +363,19 @@
       <Name>Зал</Name>
       <Type>Hall</Type>
       <Capacity>50</Capacity>
+      <RequiredAccessLevel>1</RequiredAccessLevel>
     </Facility>
     <Facility>
       <Name>Басейн</Name>
       <Type>Pool</Type>
       <Capacity>20</Capacity>
+      <RequiredAccessLevel>3</RequiredAccessLevel>
     </Facility>
     <Facility>
       <Name>Тенісний корт</Name>
       <Type>Tennis Court</Type>
       <Capacity>4</Capacity>
+      <RequiredAccessLevel>3</RequiredAccessLevel>
     </Facility>
   </Facilities>
 </AppState>

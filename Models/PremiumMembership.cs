@@ -4,8 +4,6 @@ namespace SportsClub.Models
 {
     public class PremiumMembership : Membership
     {
-        public bool HasPoolAccess { get; set; }
-
         private const double MonthlyPrice = 100.00;
         private const double AnnualPrice = 900.00;
 
@@ -14,7 +12,6 @@ namespace SportsClub.Models
         public PremiumMembership(MembershipPeriod period) : base()
         {
             Period = period;
-            HasPoolAccess = true;
             if (period == MembershipPeriod.Monthly)
             {
                 Type = "Premium (Monthly)";
@@ -36,10 +33,10 @@ namespace SportsClub.Models
 
         public override string GetInfo()
         {
-            return base.GetInfo() + (HasPoolAccess ? " + Pool" : "") + " (Premium)";
+            return base.GetInfo() + " (Premium)";
         }
 
-        public override double GetPrice(int days, int visits)
+        public override double GetPrice(int days)
         {
             return GetPriceForDays(days);
         }
