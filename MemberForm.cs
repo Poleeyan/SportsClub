@@ -86,9 +86,8 @@ namespace SportsClub
                 if (sel.StartsWith("Premium")) temp = sel.Contains("Annual") ? new PremiumMembership(Membership.MembershipPeriod.Annual) : new PremiumMembership(Membership.MembershipPeriod.Monthly);
                 else temp = sel.Contains("Annual") ? new BasicMembership(Membership.MembershipPeriod.Annual) : new BasicMembership(Membership.MembershipPeriod.Monthly);
                 if (temp == null) { lblPrice.Text = "0.00"; return; }
-                // show plan price in the form preview (full period price)
-                var price = temp.Price;
-                lblPrice.Text = price.ToString("C");
+                // static polymorphism: use overloaded GetPrice() (full-period)
+                lblPrice.Text = temp.GetPrice().ToString("0.00");
             }
             catch
             {

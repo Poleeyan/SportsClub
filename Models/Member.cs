@@ -2,7 +2,7 @@ using System;
 
 namespace SportsClub.Models
 {
-    public class Member
+    public class Member : IComparable<Member>
     {
         public Guid Id { get; set; }
         public string FullName { get; set; }
@@ -26,6 +26,12 @@ namespace SportsClub.Models
         public override string ToString()
         {
             return $"{FullName} ({Id.ToString()[..6]}) - {Subscription?.GetInfo() ?? "No sub"}";
+        }
+
+        public int CompareTo(Member? other)
+        {
+            if (other == null) return 1;
+            return string.Compare(FullName, other.FullName, StringComparison.OrdinalIgnoreCase);
         }
 
     }

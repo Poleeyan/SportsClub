@@ -12,7 +12,6 @@
         <DurationDays>30</DurationDays>
       </Subscription>
       <IsActive>true</IsActive>
-      <PurchasedDays>30</PurchasedDays>
     </Member>
     <Member>
       <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
@@ -23,10 +22,8 @@
         <Type>Premium (Monthly)</Type>
         <Price>100</Price>
         <DurationDays>30</DurationDays>
-        <HasPoolAccess>true</HasPoolAccess>
       </Subscription>
       <IsActive>true</IsActive>
-      <PurchasedDays>40</PurchasedDays>
     </Member>
     <Member>
       <Id>7cc0cdf3-187a-4e60-9a43-10aa38a90e64</Id>
@@ -39,7 +36,6 @@
         <DurationDays>30</DurationDays>
       </Subscription>
       <IsActive>true</IsActive>
-      <PurchasedDays>5</PurchasedDays>
     </Member>
     <Member>
       <Id>4f7ce9fb-588e-4a7d-b39b-ac70786cc372</Id>
@@ -50,10 +46,8 @@
         <Type>Premium (Annual)</Type>
         <Price>900</Price>
         <DurationDays>365</DurationDays>
-        <HasPoolAccess>true</HasPoolAccess>
       </Subscription>
       <IsActive>true</IsActive>
-      <PurchasedDays>30</PurchasedDays>
     </Member>
     <Member>
       <Id>8b43b03c-8bb5-4dd0-a175-381bed05af2a</Id>
@@ -66,7 +60,6 @@
         <DurationDays>30</DurationDays>
       </Subscription>
       <IsActive>false</IsActive>
-      <PurchasedDays>0</PurchasedDays>
     </Member>
   </Members>
   <Trainers>
@@ -121,7 +114,6 @@
             <DurationDays>30</DurationDays>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>30</PurchasedDays>
         </Member>
         <Member>
           <Id>7cc0cdf3-187a-4e60-9a43-10aa38a90e64</Id>
@@ -134,7 +126,6 @@
             <DurationDays>30</DurationDays>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>5</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -162,10 +153,8 @@
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
-            <HasPoolAccess>true</HasPoolAccess>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>40</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -193,10 +182,8 @@
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
-            <HasPoolAccess>true</HasPoolAccess>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>40</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -226,7 +213,6 @@
             <DurationDays>30</DurationDays>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>30</PurchasedDays>
         </Member>
         <Member>
           <Id>c7e783c4-2ead-44e2-969d-a3403f529296</Id>
@@ -237,10 +223,8 @@
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
-            <HasPoolAccess>true</HasPoolAccess>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>40</PurchasedDays>
         </Member>
         <Member>
           <Id>7cc0cdf3-187a-4e60-9a43-10aa38a90e64</Id>
@@ -253,7 +237,6 @@
             <DurationDays>30</DurationDays>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>5</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -281,10 +264,8 @@
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
-            <HasPoolAccess>true</HasPoolAccess>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>40</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -312,10 +293,8 @@
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
-            <HasPoolAccess>true</HasPoolAccess>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>40</PurchasedDays>
         </Member>
       </Participants>
       <Facility>
@@ -343,10 +322,8 @@
             <Type>Premium (Monthly)</Type>
             <Price>100</Price>
             <DurationDays>30</DurationDays>
-            <HasPoolAccess>true</HasPoolAccess>
           </Subscription>
           <IsActive>true</IsActive>
-          <PurchasedDays>40</PurchasedDays>
         </Member>
       </Participants>
       <Facility>

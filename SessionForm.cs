@@ -102,7 +102,11 @@ namespace SportsClub
                 requiredLevel = selFacility.RequiredAccessLevel;
             }
 
-            var list = members.Where(m => m.Subscription == null || m.Subscription.GetAccessLevel() >= requiredLevel).ToList();
+            var list = members.Where(m =>
+            {
+                var access = m.Subscription as IAccessLevel;
+                return access == null || access.GetAccessLevel() >= requiredLevel;
+            }).ToList();
             foreach (var m in list) clbMembers.Items.Add(m.FullName);
 
             // restore checked state from Session.Participants if any
@@ -142,7 +146,11 @@ namespace SportsClub
             {
                 // Перевірка рівня доступу через GetAccessLevel()
                 int requiredLevel = selFacility.RequiredAccessLevel;
-                var insufficientAccess = selected.Where(m => m.Subscription == null || m.Subscription.GetAccessLevel() < requiredLevel).ToList();
+                var insufficientAccess = selected.Where(m =>
+                {
+                    var access = m.Subscription as IAccessLevel;
+                    return access == null || access.GetAccessLevel() < requiredLevel;
+                }).ToList();
                 if (insufficientAccess.Any())
                 {
                     MessageBox.Show($"Це приміщення ({selFacility.Name}) вимагає рівень доступу {requiredLevel}. Видаліть учасників без необхідної підписки або оберіть інше місце.");

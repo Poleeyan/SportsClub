@@ -6,7 +6,7 @@ namespace SportsClub.Models
 {
     [XmlInclude(typeof(BasicMembership))]
     [XmlInclude(typeof(PremiumMembership))]
-    public abstract class Membership
+    public abstract class Membership : IAccessLevel
     {
         public enum MembershipPeriod
         {
@@ -15,6 +15,8 @@ namespace SportsClub.Models
         }
 
         public MembershipPeriod Period { get; set; } = MembershipPeriod.Monthly;
+
+        protected DateTime CreatedAt { get; } = DateTime.Now; // protected to demonstrate access level
 
         public string Type { get; set; } = string.Empty;
         public double Price { get; set; } = 0.0;
@@ -31,7 +33,7 @@ namespace SportsClub.Models
 
         public virtual string GetInfo()
         {
-            return $"{Type} - {Price:C} for {DurationDays} days";
+            return $"{Type} - {Price:C} for {DurationDays} days (created {CreatedAt:yyyy-MM-dd})";
         }
 
         // Calculate price for arbitrary number of days based on the
@@ -46,6 +48,12 @@ namespace SportsClub.Models
         public virtual double GetPrice(int days)
         {
             return GetPriceForDays(days);
+        }
+
+        // Overload to demonstrate static polymorphism: default price for full period
+        public virtual double GetPrice()
+        {
+            return GetPriceForDays(DurationDays);
         }
 
         public abstract int GetAccessLevel(); // abstract method

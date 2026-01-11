@@ -84,6 +84,7 @@ namespace SportsClub
         private void RefreshMembersGrid()
         {
             dgvMembers!.DataSource = null;
+            members.Sort(); // ensure IComparable is actually used
             static string FormatSession(TrainingSession s)
             {
                 var spec = s.Coach?.Specialization ?? string.Empty;
