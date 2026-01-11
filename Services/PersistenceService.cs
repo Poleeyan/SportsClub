@@ -44,7 +44,13 @@ namespace SportsClub.Services
                     Registered = reg,
                     IsActive = !bool.TryParse(parts.Length > 3 ? parts[3] : "True", out var a) || a
                 };
-                if (!string.IsNullOrEmpty(subType)) m.Subscription = subType.Contains("Premium") ? new PremiumMembership() as Membership : new BasicMembership();
+                if (!string.IsNullOrEmpty(subType))
+                {
+                    var isPremium = subType.Contains("Premium");
+                    var isAnnual = subType.Contains("Annual");
+                    if (isPremium) m.Subscription = isAnnual ? new PremiumMembership(Membership.MembershipPeriod.Annual) as Membership : new PremiumMembership(Membership.MembershipPeriod.Monthly) as Membership;
+                    else m.Subscription = isAnnual ? new BasicMembership(Membership.MembershipPeriod.Annual) as Membership : new BasicMembership(Membership.MembershipPeriod.Monthly) as Membership;
+                }
                 list.Add(m);
             }
             return list;
@@ -86,7 +92,13 @@ namespace SportsClub.Services
                     Registered = reg,
                     IsActive = isActive
                 };
-                if (!string.IsNullOrEmpty(subType)) m.Subscription = subType.Contains("Premium") ? new PremiumMembership() as Membership : new BasicMembership();
+                if (!string.IsNullOrEmpty(subType))
+                {
+                    var isPremium = subType.Contains("Premium");
+                    var isAnnual = subType.Contains("Annual");
+                    if (isPremium) m.Subscription = isAnnual ? new PremiumMembership(Membership.MembershipPeriod.Annual) as Membership : new PremiumMembership(Membership.MembershipPeriod.Monthly) as Membership;
+                    else m.Subscription = isAnnual ? new BasicMembership(Membership.MembershipPeriod.Annual) as Membership : new BasicMembership(Membership.MembershipPeriod.Monthly) as Membership;
+                }
                 list.Add(m);
             }
             return list;

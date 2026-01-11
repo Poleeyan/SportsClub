@@ -8,6 +8,14 @@ namespace SportsClub.Models
     [XmlInclude(typeof(PremiumMembership))]
     public abstract class Membership
     {
+        public enum MembershipPeriod
+        {
+            Monthly,
+            Annual
+        }
+
+        public MembershipPeriod Period { get; set; } = MembershipPeriod.Monthly;
+
         [XmlIgnore]
         protected DateTime createdAt; // protected example, ignored for XML
 

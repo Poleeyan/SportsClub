@@ -4,7 +4,27 @@ namespace SportsClub.Models
 {
     public class BasicMembership : Membership
     {
-        public BasicMembership() : base("Basic", 29.99, 30) { }
+        private const double MonthlyPrice = 30.00;
+        private const double AnnualPrice = 300.00;
+
+        public BasicMembership() : this(MembershipPeriod.Monthly) { }
+
+        public BasicMembership(MembershipPeriod period) : base()
+        {
+            Period = period;
+            if (period == MembershipPeriod.Monthly)
+            {
+                Type = "Basic (Monthly)";
+                Price = MonthlyPrice;
+                DurationDays = 30;
+            }
+            else
+            {
+                Type = "Basic (Annual)";
+                Price = AnnualPrice;
+                DurationDays = 365;
+            }
+        }
 
         public override int GetAccessLevel()
         {

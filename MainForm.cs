@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Drawing;
 using SportsClub.Models;
 using SportsClub.Services;
 
@@ -13,6 +14,15 @@ namespace SportsClub
         private List<Trainer> trainers = new List<Trainer>();
         private List<TrainingSession> sessions = new List<TrainingSession>();
         private readonly List<Facility> facilities = new List<Facility>();
+
+        // header-based filters
+        private DateTime? headerFilterFrom;
+        private DateTime? headerFilterTo;
+        private string? headerFilterCoach;
+        private string? headerFilterType;
+        private string? headerFilterPlace;
+        private int? headerFilterMinParticipants;
+        private bool headerParticipantsDesc = true;
 
         public MainForm()
         {
@@ -88,9 +98,19 @@ namespace SportsClub
                 m.FullName,
                 Sessions = string.Join(", ", sessions.Where(s => s.Participants != null && s.Participants.Any(p => p.Id == m.Id)).Select(s => FormatSession(s))),
                 Subscription = m.Subscription?.Type,
-                Days = m.PurchasedDays,
-                Price = m.Subscription != null ? m.Subscription.GetPrice(m.PurchasedDays, 0) : 0.0
+                // compute remaining days and active flag based on subscription validity
+                RemainingDays = m.Subscription != null ? Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days)) : 0,
+                Active = m.Subscription != null ? Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days)) > 0 : false,
+                // prorated price for remaining days
+                Price = m.Subscription != null ? m.Subscription.GetPrice(Math.Max(0, (m.Subscription.DurationDays - (DateTime.Now - m.Registered).Days)), 0) : 0.0
             }).ToList();
+
+            // update IsActive flags based on remaining days
+            for (int i = 0; i < members.Count; i++)
+            {
+                var remaining = view[i].RemainingDays;
+                members[i].IsActive = remaining > 0;
+            }
             dgvMembers!.DataSource = view;
             // format Price column as currency if present
             var _priceCol = dgvMembers!.Columns["Price"];
@@ -111,7 +131,55 @@ namespace SportsClub
         private void RefreshSessionsGrid()
         {
             dgvSessions!.DataSource = null;
-            var view = sessions.Select(s => new {
+            // apply header-based filters
+            IEnumerable<TrainingSession> filtered = sessions;
+            if (headerFilterPlace != null)
+            {
+                filtered = filtered.Where(s => (s.Facility != null && s.Facility.Name == headerFilterPlace) || s.Location == headerFilterPlace);
+            }
+            if (headerFilterCoach != null)
+            {
+                filtered = filtered.Where(s => s.Coach != null && s.Coach.FullName == headerFilterCoach);
+            }
+            if (headerFilterType != null)
+            {
+                filtered = filtered.Where(s => (s.Coach?.Specialization ?? string.Empty) == headerFilterType);
+            }
+            if (headerFilterFrom.HasValue && headerFilterTo.HasValue)
+            {
+                var from = headerFilterFrom.Value.Date;
+                var to = headerFilterTo.Value.Date.AddDays(1).AddTicks(-1);
+                filtered = filtered.Where(s => s.Date >= from && s.Date <= to);
+            }
+            if (headerFilterMinParticipants.HasValue)
+            {
+                var min = headerFilterMinParticipants.Value;
+                filtered = filtered.Where(s => (s.Participants?.Count ?? 0) >= min);
+            }
+
+            // Active vs Past toggle
+            var today = DateTime.Now.Date;
+            var showPast = rbSessionsPast != null && rbSessionsPast.Checked;
+            if (showPast)
+            {
+                filtered = filtered.Where(s => s.Date.Date < today);
+            }
+            else
+            {
+                filtered = filtered.Where(s => s.Date.Date >= today);
+            }
+
+            var filteredList = filtered.ToList();
+            if (headerParticipantsDesc)
+            {
+                filteredList = filteredList.OrderByDescending(s => s.Participants?.Count ?? 0).ToList();
+            }
+            else
+            {
+                filteredList = filteredList.OrderBy(s => s.Participants?.Count ?? 0).ToList();
+            }
+
+            var view = filteredList.Select(s => new {
                 Date = s.Date.ToString("g"),
                 Coach = s.Coach?.FullName,
                 TrainingType = s.Coach?.Specialization,
@@ -119,12 +187,101 @@ namespace SportsClub
                 Place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location
             }).ToList();
             dgvSessions!.DataSource = view;
+
+            // underline past sessions in the grid for visual cue
+            for (int i = 0; i < filteredList.Count && i < dgvSessions.Rows.Count; i++)
+            {
+                var row = dgvSessions.Rows[i];
+                var isPast = filteredList[i].Date.Date < today;
+                var styleFont = new Font(dgvSessions.Font, isPast ? FontStyle.Underline : FontStyle.Regular);
+                row.DefaultCellStyle.Font = styleFont;
+            }
             // rename TrainingType column header to the requested Ukrainian label
             var _ttCol = dgvSessions!.Columns["TrainingType"];
             if (_ttCol != null)
             {
                 _ttCol.HeaderText = "Тренерування";
             }
+        }
+
+        private void DgvSessions_ColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (dgvSessions == null) return;
+            if (e.ColumnIndex < 0 || e.ColumnIndex >= dgvSessions.Columns.Count) return;
+            var col = dgvSessions.Columns[e.ColumnIndex];
+            var colName = col.Name ?? col.HeaderText;
+            // Determine action by column
+            if (colName == "Date")
+            {
+                var defaultFrom = headerFilterFrom ?? (sessions.Any() ? sessions.Min(s => s.Date).Date : DateTime.Now.Date.AddDays(-7));
+                var defaultTo = headerFilterTo ?? (sessions.Any() ? sessions.Max(s => s.Date).Date : DateTime.Now.Date);
+                using var f = new DateRangeForm(defaultFrom, defaultTo);
+                if (f.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    headerFilterFrom = f.From;
+                    headerFilterTo = f.To;
+                    RefreshSessionsGrid();
+                }
+            }
+            else if (colName == "Participants")
+            {
+                // Toggle participants sort order (descending <-> ascending)
+                headerParticipantsDesc = !headerParticipantsDesc;
+                RefreshSessionsGrid();
+            }
+            else if (colName == "Coach" || colName == "TrainingType" || colName == "Place")
+            {
+                // collect distinct values for this column from sessions
+                var values = new List<string>();
+                foreach (var s in sessions)
+                {
+                    string? v = null;
+                    if (colName == "Coach") v = s.Coach?.FullName;
+                    else if (colName == "TrainingType") v = s.Coach?.Specialization;
+                    else if (colName == "Place") v = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location;
+                    if (!string.IsNullOrWhiteSpace(v) && !values.Contains(v)) values.Add(v);
+                }
+                values.Sort();
+                var menu = new ContextMenuStrip();
+                menu.Items.Add("(All)").Click += (ss, ee) => { if (colName == "Coach") headerFilterCoach = null; else if (colName == "TrainingType") headerFilterType = null; else if (colName == "Place") headerFilterPlace = null; RefreshSessionsGrid(); };
+                menu.Items.Add(new ToolStripSeparator());
+                foreach (var val in values)
+                {
+                    var item = menu.Items.Add(val);
+                    item.Click += (ss, ee) => { if (colName == "Coach") headerFilterCoach = val; else if (colName == "TrainingType") headerFilterType = val; else if (colName == "Place") headerFilterPlace = val; RefreshSessionsGrid(); };
+                }
+                menu.Show(Cursor.Position);
+            }
+        }
+
+        private void BtnApplyFilters_Click(object? sender, EventArgs e)
+        {
+            RefreshSessionsGrid();
+        }
+
+        private void BtnClearFilters_Click(object? sender, EventArgs e)
+        {
+            // clear header-based filters
+            headerFilterFrom = null;
+            headerFilterTo = null;
+            headerFilterCoach = null;
+            headerFilterType = null;
+            headerFilterPlace = null;
+            headerFilterMinParticipants = null;
+            // also safely clear any UI filter controls if present
+            if (dtpFilterFrom != null) dtpFilterFrom.Value = DateTime.Now.Date;
+            if (dtpFilterTo != null) dtpFilterTo.Value = DateTime.Now.Date;
+            RefreshSessionsGrid();
+        }
+
+        private void BtnCalendar_Click(object? sender, EventArgs e)
+        {
+            if (dgvMembers!.CurrentRow == null) { MessageBox.Show("Select a member"); return; }
+            var idx = dgvMembers!.CurrentRow!.Index;
+            if (idx < 0 || idx >= members.Count) return;
+            var m = members[idx];
+            using var f = new MemberCalendarForm(m, sessions);
+            f.ShowDialog();
         }
 
         private void RefreshFacilitiesGrid()
@@ -196,14 +353,28 @@ namespace SportsClub
         private void BtnEditSession_Click(object? sender, EventArgs e)
         {
             if (dgvSessions!.CurrentRow == null) return;
-            var idx = dgvSessions!.CurrentRow!.Index;
-            if (idx < 0 || idx >= sessions.Count) return;
-            var s = sessions[idx];
+            // Find matching session from filtered grid by comparing displayed values
+            var row = dgvSessions!.CurrentRow;
+            var dateStr = row.Cells["Date"]?.Value?.ToString() ?? string.Empty;
+            var coachStr = row.Cells["Coach"]?.Value?.ToString() ?? string.Empty;
+            var participantsStr = row.Cells["Participants"]?.Value?.ToString() ?? "0";
+            
+            if (!int.TryParse(participantsStr, out var displayParticipants)) return;
+            
+            // Match by date, coach, and participant count to handle filtered/sorted grids correctly
+            var s = sessions.FirstOrDefault(x => 
+                x.Date.ToString("g") == dateStr && 
+                (x.Coach?.FullName ?? "") == coachStr &&
+                (x.Participants?.Count ?? 0) == displayParticipants);
+            
+            if (s == null) return;
+
             using var f = new SessionForm(trainers, members, facilities);
             f.Session = new TrainingSession(s.Date, s.Coach, s.Facility) { Participants = s.Participants, Facility = s.Facility, Location = s.Location };
             if (f.ShowDialog() == DialogResult.OK)
             {
-                sessions[idx] = f.Session;
+                var idx = sessions.IndexOf(s);
+                if (idx >= 0) sessions[idx] = f.Session;
                 RefreshAllGrids();
             }
         }
@@ -211,11 +382,25 @@ namespace SportsClub
         private void BtnDeleteSession_Click(object? sender, EventArgs e)
         {
             if (dgvSessions!.CurrentRow == null) return;
-            var idx = dgvSessions!.CurrentRow!.Index;
-            if (idx < 0 || idx >= sessions.Count) return;
+            // Find matching session from filtered grid by comparing displayed values
+            var row = dgvSessions!.CurrentRow;
+            var dateStr = row.Cells["Date"]?.Value?.ToString() ?? string.Empty;
+            var coachStr = row.Cells["Coach"]?.Value?.ToString() ?? string.Empty;
+            var participantsStr = row.Cells["Participants"]?.Value?.ToString() ?? "0";
+            
+            if (!int.TryParse(participantsStr, out var displayParticipants)) return;
+            
+            // Match by date, coach, and participant count to handle filtered/sorted grids correctly
+            var s = sessions.FirstOrDefault(x => 
+                x.Date.ToString("g") == dateStr && 
+                (x.Coach?.FullName ?? "") == coachStr &&
+                (x.Participants?.Count ?? 0) == displayParticipants);
+            
+            if (s == null) return;
+
             if (MessageBox.Show("Delete session?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                sessions.RemoveAt(idx);
+                sessions.Remove(s);
                 RefreshAllGrids();
             }
         }

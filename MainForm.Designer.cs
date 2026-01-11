@@ -14,7 +14,13 @@ namespace SportsClub
         private DataGridView? dgvMembers;
         private DataGridView? dgvTrainers;
         private DataGridView? dgvSessions;
+        private RadioButton? rbSessionsActive;
+        private RadioButton? rbSessionsPast;
         private DataGridView? dgvFacilities;
+        private DateTimePicker? dtpFilterFrom;
+        private DateTimePicker? dtpFilterTo;
+        private Button? btnApplyFilters;
+        private Button? btnClearFilters;
         
         private Button? btnSaveXml, btnLoadXml;
 
@@ -86,9 +92,12 @@ namespace SportsClub
             btnEditMember.Click += BtnEdit_Click;
             var btnDeleteMember = new Button { Text = "Delete Selected", AutoSize = true, Margin = new Padding(6) };
             btnDeleteMember.Click += BtnDelete_Click;
+            var btnCalendar = new Button { Text = "Calendar", AutoSize = true, Margin = new Padding(6) };
+            btnCalendar.Click += BtnCalendar_Click;
             membersTop.Controls.Add(btnAddMember);
             membersTop.Controls.Add(btnEditMember);
             membersTop.Controls.Add(btnDeleteMember);
+            membersTop.Controls.Add(btnCalendar);
             dgvMembers = new DataGridView { Dock = DockStyle.Fill, ReadOnly = true, AutoGenerateColumns = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
             membersPanel.Controls.Add(dgvMembers);
             membersPanel.Controls.Add(membersTop);
@@ -114,7 +123,15 @@ namespace SportsClub
             // Sessions grid + buttons
             var sessionsPanel = new Panel { Dock = DockStyle.Fill };
             dgvSessions = new DataGridView { Dock = DockStyle.Fill, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+            dgvSessions.ColumnHeaderMouseClick += DgvSessions_ColumnHeaderMouseClick;
             var sessionsButtons = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, Height = 40 };
+            // filter controls
+            dtpFilterFrom = new DateTimePicker { Format = DateTimePickerFormat.Short, Width = 110, Margin = new Padding(6) };
+            dtpFilterTo = new DateTimePicker { Format = DateTimePickerFormat.Short, Width = 110, Margin = new Padding(6) };
+            btnApplyFilters = new Button { Text = "Apply", AutoSize = true, Margin = new Padding(6) };
+            btnApplyFilters.Click += BtnApplyFilters_Click;
+            btnClearFilters = new Button { Text = "Clear", AutoSize = true, Margin = new Padding(6) };
+            btnClearFilters.Click += BtnClearFilters_Click;
             var btnAddSession = new Button { Text = "Add", AutoSize = true, Margin = new Padding(6) };
             btnAddSession.Click += BtnAddSession_Click;
             var btnEditSession = new Button { Text = "Edit", AutoSize = true, Margin = new Padding(6) };
@@ -124,9 +141,24 @@ namespace SportsClub
             sessionsButtons.Controls.Add(btnAddSession);
             sessionsButtons.Controls.Add(btnEditSession);
             sessionsButtons.Controls.Add(btnDeleteSession);
+            // active/past toggle
+            rbSessionsActive = new RadioButton { Text = "Active", AutoSize = true, Margin = new Padding(10, 12, 0, 10), Checked = true };
+            rbSessionsPast = new RadioButton { Text = "Past", AutoSize = true, Margin = new Padding(6, 12, 0, 10) };
+            rbSessionsActive.CheckedChanged += (s, e) => { if (rbSessionsActive!.Checked) RefreshSessionsGrid(); };
+            rbSessionsPast.CheckedChanged += (s, e) => { if (rbSessionsPast!.Checked) RefreshSessionsGrid(); };
             var btnExportSession = new Button { Text = "Export", AutoSize = true, Margin = new Padding(6) };
             btnExportSession.Click += BtnExportSessions_Click;
             sessionsButtons.Controls.Add(btnExportSession);
+            // add filter controls to sessions toolbar
+            sessionsButtons.Controls.Add(new Label { Text = "From:", AutoSize = true, Margin = new Padding(10, 10, 0, 10) });
+            sessionsButtons.Controls.Add(dtpFilterFrom);
+            sessionsButtons.Controls.Add(new Label { Text = "To:", AutoSize = true, Margin = new Padding(10, 10, 0, 10) });
+            sessionsButtons.Controls.Add(dtpFilterTo);
+            sessionsButtons.Controls.Add(btnApplyFilters);
+            sessionsButtons.Controls.Add(btnClearFilters);
+            sessionsButtons.Controls.Add(new Label { Text = "Show:", AutoSize = true, Margin = new Padding(12, 10, 0, 10) });
+            sessionsButtons.Controls.Add(rbSessionsActive);
+            sessionsButtons.Controls.Add(rbSessionsPast);
             sessionsPanel.Controls.Add(dgvSessions);
             sessionsPanel.Controls.Add(sessionsButtons);
             tabSessions.Controls.Add(sessionsPanel);

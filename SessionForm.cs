@@ -103,7 +103,7 @@ namespace SportsClub
                 premiumOnly = txt.Contains("pool") || txt.Contains("басейн") || txt.Contains("tennis") || txt.Contains("теніс") || txt.Contains("корт");
             }
 
-            var list = premiumOnly ? [.. members.Where(m => m.Subscription != null && m.Subscription.Type == "Premium")] : members;
+            var list = premiumOnly ? members.Where(m => m.Subscription != null && (m.Subscription.Type ?? "").StartsWith("Premium")).ToList() : members.ToList();
             foreach (var m in list) clbMembers.Items.Add(m.FullName);
 
             // restore checked state from Session.Participants if any
@@ -146,7 +146,7 @@ namespace SportsClub
                 bool premiumOnly = txt.Contains("pool") || txt.Contains("басейн") || txt.Contains("tennis") || txt.Contains("теніс") || txt.Contains("корт");
                 if (premiumOnly)
                 {
-                    var notPremium = selected.Where(m => m.Subscription == null || m.Subscription.Type != "Premium").ToList();
+                    var notPremium = selected.Where(m => m.Subscription == null || !(m.Subscription.Type ?? "").StartsWith("Premium")).ToList();
                     if (notPremium.Any())
                     {
                         MessageBox.Show("Training in pool or tennis court is allowed only for Premium members. Remove non-premium participants or choose another place.");

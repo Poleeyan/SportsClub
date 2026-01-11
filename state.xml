@@ -6,8 +6,9 @@
       <FullName>Степан</FullName>
       <Registered>2025-12-15T16:35:22.5512244+02:00</Registered>
       <Subscription xsi:type="BasicMembership">
-        <Type>Basic</Type>
-        <Price>29.99</Price>
+        <Period>Monthly</Period>
+        <Type>Basic (Monthly)</Type>
+        <Price>30</Price>
         <DurationDays>30</DurationDays>
       </Subscription>
       <IsActive>true</IsActive>
@@ -18,8 +19,9 @@
       <FullName>Андрій</FullName>
       <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
       <Subscription xsi:type="PremiumMembership">
-        <Type>Premium</Type>
-        <Price>59.99</Price>
+        <Period>Monthly</Period>
+        <Type>Premium (Monthly)</Type>
+        <Price>100</Price>
         <DurationDays>30</DurationDays>
         <HasPoolAccess>true</HasPoolAccess>
       </Subscription>
@@ -31,12 +33,40 @@
       <FullName>Олексій</FullName>
       <Registered>2025-12-29T03:20:56.0239409+02:00</Registered>
       <Subscription xsi:type="BasicMembership">
-        <Type>Basic</Type>
-        <Price>29.99</Price>
+        <Period>Monthly</Period>
+        <Type>Basic (Monthly)</Type>
+        <Price>30</Price>
         <DurationDays>30</DurationDays>
       </Subscription>
       <IsActive>true</IsActive>
       <PurchasedDays>5</PurchasedDays>
+    </Member>
+    <Member>
+      <Id>4f7ce9fb-588e-4a7d-b39b-ac70786cc372</Id>
+      <FullName>Богдан</FullName>
+      <Registered>2025-12-29T14:44:35.8995317+02:00</Registered>
+      <Subscription xsi:type="PremiumMembership">
+        <Period>Annual</Period>
+        <Type>Premium (Annual)</Type>
+        <Price>900</Price>
+        <DurationDays>365</DurationDays>
+        <HasPoolAccess>true</HasPoolAccess>
+      </Subscription>
+      <IsActive>true</IsActive>
+      <PurchasedDays>30</PurchasedDays>
+    </Member>
+    <Member>
+      <Id>8b43b03c-8bb5-4dd0-a175-381bed05af2a</Id>
+      <FullName>Максим</FullName>
+      <Registered>2025-11-12T18:56:39.878</Registered>
+      <Subscription xsi:type="BasicMembership">
+        <Period>Monthly</Period>
+        <Type>Basic (Monthly)</Type>
+        <Price>30</Price>
+        <DurationDays>30</DurationDays>
+      </Subscription>
+      <IsActive>false</IsActive>
+      <PurchasedDays>0</PurchasedDays>
     </Member>
   </Members>
   <Trainers>
@@ -85,6 +115,7 @@
           <FullName>Степан</FullName>
           <Registered>2025-12-15T16:35:22.5512244+02:00</Registered>
           <Subscription xsi:type="BasicMembership">
+            <Period>Monthly</Period>
             <Type>Basic</Type>
             <Price>29.99</Price>
             <DurationDays>30</DurationDays>
@@ -97,6 +128,7 @@
           <FullName>Олексій</FullName>
           <Registered>2025-12-29T03:20:56.0239409+02:00</Registered>
           <Subscription xsi:type="BasicMembership">
+            <Period>Monthly</Period>
             <Type>Basic</Type>
             <Price>29.99</Price>
             <DurationDays>30</DurationDays>
@@ -125,6 +157,7 @@
           <FullName>Андрій</FullName>
           <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
           <Subscription xsi:type="PremiumMembership">
+            <Period>Monthly</Period>
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
@@ -154,6 +187,7 @@
           <FullName>Андрій</FullName>
           <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
           <Subscription xsi:type="PremiumMembership">
+            <Period>Monthly</Period>
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
@@ -183,6 +217,7 @@
           <FullName>Степан</FullName>
           <Registered>2025-12-15T16:35:22.5512244+02:00</Registered>
           <Subscription xsi:type="BasicMembership">
+            <Period>Monthly</Period>
             <Type>Basic</Type>
             <Price>29.99</Price>
             <DurationDays>30</DurationDays>
@@ -195,6 +230,7 @@
           <FullName>Андрій</FullName>
           <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
           <Subscription xsi:type="PremiumMembership">
+            <Period>Monthly</Period>
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
@@ -208,6 +244,7 @@
           <FullName>Олексій</FullName>
           <Registered>2025-12-29T03:20:56.0239409+02:00</Registered>
           <Subscription xsi:type="BasicMembership">
+            <Period>Monthly</Period>
             <Type>Basic</Type>
             <Price>29.99</Price>
             <DurationDays>30</DurationDays>
@@ -236,6 +273,7 @@
           <FullName>Андрій</FullName>
           <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
           <Subscription xsi:type="PremiumMembership">
+            <Period>Monthly</Period>
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
@@ -265,6 +303,7 @@
           <FullName>Андрій</FullName>
           <Registered>2025-12-15T16:35:29.3997166+02:00</Registered>
           <Subscription xsi:type="PremiumMembership">
+            <Period>Monthly</Period>
             <Type>Premium</Type>
             <Price>59.99</Price>
             <DurationDays>30</DurationDays>
