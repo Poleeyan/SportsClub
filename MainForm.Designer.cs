@@ -92,12 +92,9 @@ namespace SportsClub
             btnEditMember.Click += BtnEdit_Click;
             var btnDeleteMember = new Button { Text = "Delete Selected", AutoSize = true, Margin = new Padding(6) };
             btnDeleteMember.Click += BtnDelete_Click;
-            var btnCalendar = new Button { Text = "Calendar", AutoSize = true, Margin = new Padding(6) };
-            btnCalendar.Click += BtnCalendar_Click;
             membersTop.Controls.Add(btnAddMember);
             membersTop.Controls.Add(btnEditMember);
             membersTop.Controls.Add(btnDeleteMember);
-            membersTop.Controls.Add(btnCalendar);
             dgvMembers = new DataGridView { Dock = DockStyle.Fill, ReadOnly = true, AutoGenerateColumns = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
             membersPanel.Controls.Add(dgvMembers);
             membersPanel.Controls.Add(membersTop);

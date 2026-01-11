@@ -89,14 +89,6 @@ namespace SportsClub
         {
             dgvMembers!.DataSource = null;
             members.Sort(); // ensure IComparable is actually used
-            static string FormatSession(TrainingSession s)
-            {
-                var spec = s.Coach?.Specialization ?? string.Empty;
-                var place = string.IsNullOrEmpty(s.Location) ? s.Facility?.Name : s.Location;
-                var prefix = string.IsNullOrEmpty(spec) ? string.Empty : spec + ": ";
-                return $"{s.Date:yyyy-MM-dd} ({prefix}{place})";
-            }
-
             var view = members.Select(m => new
             {
                 m.FullName,
@@ -287,17 +279,6 @@ namespace SportsClub
             if (dtpFilterFrom != null) dtpFilterFrom.Value = DateTime.Now.Date;
             if (dtpFilterTo != null) dtpFilterTo.Value = DateTime.Now.Date;
             RefreshSessionsGrid();
-        }
-
-        private void BtnCalendar_Click(object? sender, EventArgs e)
-        {
-            if (dgvMembers!.CurrentRow == null) { MessageBox.Show("Select a member"); return; }
-            // fallback: open viewer for current selection
-            var name = dgvMembers!.CurrentRow!.Cells["FullName"]?.Value?.ToString();
-            var m = members.FirstOrDefault(x => x.FullName == name);
-            if (m == null) return;
-            using var f = new MemberCalendarForm(m, sessions);
-            f.ShowDialog();
         }
 
         private void DgvMembers_CellContentClick(object? sender, DataGridViewCellEventArgs e)
