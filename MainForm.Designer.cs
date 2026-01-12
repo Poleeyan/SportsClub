@@ -50,7 +50,7 @@ namespace SportsClub
             // persistence buttons (Save/Load XML) placed above tabs
             var persistFlow = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(6) };
             btnSaveXml = new Button { Text = "Save XML", AutoSize = true, Margin = new Padding(6) };
-            btnSaveXml.Click += (s, e) => { try { Services.PersistenceService.SaveStateXml("state.xml", members, trainers, sessions, facilities); MessageBox.Show("Saved xml"); } catch (Exception ex) { MessageBox.Show(ex.Message); } };
+            btnSaveXml.Click += (s, e) => { try { Services.PersistenceService.SaveStateXml("state.xml", members, trainers, sessions, facilities); MessageBox.Show("XML файл успішно збережено!", "Збереження", MessageBoxButtons.OK, MessageBoxIcon.Information); } catch (Exception ex) { MessageBox.Show(ex.Message); } };
             persistFlow.Controls.Add(btnSaveXml);
             btnLoadXml = new Button { Text = "Load XML", AutoSize = true, Margin = new Padding(6) };
             btnLoadXml.Click += (s, e) => { try {
@@ -70,6 +70,7 @@ namespace SportsClub
                         if (string.IsNullOrWhiteSpace(ses.Location) && ses.Facility != null) ses.Location = ses.Facility.Name;
                     }
                     RefreshAllGrids();
+                    MessageBox.Show("XML файл успішно завантажено!", "Завантаження", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 } catch (Exception ex) { MessageBox.Show(ex.Message); } };
             persistFlow.Controls.Add(btnLoadXml);
             root.Controls.Add(persistFlow, 0, 0);

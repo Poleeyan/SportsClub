@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\v0va1\\Documents\\VSC\\SportsClub\\SportsClub.csproj": {}
+    "C:\\Users\\1\\Downloads\\SportsClub\\SportsClub.csproj": {}
   },
   "projects": {
-    "C:\\Users\\v0va1\\Documents\\VSC\\SportsClub\\SportsClub.csproj": {
+    "C:\\Users\\1\\Downloads\\SportsClub\\SportsClub.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\v0va1\\Documents\\VSC\\SportsClub\\SportsClub.csproj",
+        "projectUniqueName": "C:\\Users\\1\\Downloads\\SportsClub\\SportsClub.csproj",
         "projectName": "SportsClub",
-        "projectPath": "C:\\Users\\v0va1\\Documents\\VSC\\SportsClub\\SportsClub.csproj",
-        "packagesPath": "C:\\Users\\v0va1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\v0va1\\Documents\\VSC\\SportsClub\\obj\\",
+        "projectPath": "C:\\Users\\1\\Downloads\\SportsClub\\SportsClub.csproj",
+        "packagesPath": "C:\\Users\\1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\1\\Downloads\\SportsClub\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\v0va1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\1\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0-windows"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0-windows7.0": {
@@ -62,7 +62,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
